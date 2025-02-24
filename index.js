@@ -8,9 +8,21 @@ const path = require('path');
 app.use(express.static('public'));
 app.use(express.static('images'));
 
-// Without middleware
+// ---------------------- USER route-----------------------
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '/public/home.html'));
+    res.sendFile(path.join(__dirname, '/public/user/landingpage.html'));
+});
+
+app.get('/user_login', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/user/user_login.html'));
+});
+
+app.get('/user_register', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/user/user_register.html'));
+});
+//-------------------------USER action-----------------------
+app.get('/user_register_acc', function(req, res) {
+  res.render("ok");
 });
 
 app.listen(port, () => {
