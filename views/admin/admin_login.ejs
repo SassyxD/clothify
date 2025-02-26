@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>ลงชื่อเข้าใช้ผู้จัดการ</h3>
+    <% if (typeof error !== 'undefined') { %>
+        <% if (error === 'user_not_found') { %>
+            <p style="color: red;">ไม่มีบัญชีในระบบ</p>
+        <% } else if (error === 'invalid_credentials') { %>
+            <p style="color: red;">บัญชีหรือรหัสผ่านผิด</p>
+        <% } %>
+    <% } %>
+    <form action="/admin_login_action" method="POST">
+        <label for="username">ชื่อบัญชื่อผู้ใช้</label>
+        <input type="text" id="username" name="username" placeholder="ชื่อบัญชื่อผู้ใช้" required><br><br>
+
+        <label for="password">รหัสผ่าน</label>
+        <input type="password" id="password" name="password" placeholder="รหัสผ่าน" required><br><br>
+        <button type="submit">ยืนยัน</button>
+    </form>
+</body>
+</html>
