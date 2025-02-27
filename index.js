@@ -32,7 +32,6 @@ function isAuthenticated(req, res, next) {
       res.status(401).send('Unauthorized');
   }
 }
-
 // Connect to SQLite database
 let db = new sqlite3.Database('clothify.db', (err) => {
     if (err) {
@@ -91,14 +90,33 @@ app.get('/user_register', function (req, res) {
 });
 //หน้าuserhomepage
 app.get('/user_homepage', function (req, res) {
-    const userid = req.session.user_id ;
-    db.get('SELECT FirstName FROM Customer WHERE CustomerID = ? ', [userid], (err, row) => {
+    db.get('SELECT FirstName FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
         if (err || !row) {
             return res.status(401).send('Invalid credentials');
         }
+        console.log("Go to user_homepage User ID:", req.session.user_id);
         res.render('user/user_homepage', { firstname: row.FirstName});
     });
 });
+
+//หน้าลูกค้าแสดงรายละเอียดแก้ไข/ปรับแต่งสูท
+app.get('/user_fix_suit', (req, res) => {
+    res.render("user/user_fix_suit");
+});
+//หน้าจอง
+app.get('/user_booking', function (req, res) {
+    res.render('user/user_booking',);
+});
+// //หน้ายืนยันจอง
+// app.get('/user_booking', function (req, res) {
+//     db.get('SELECT * FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+//         console.log("User ID:", req.session.user_id);
+//         if (err || !row) {
+//             return res.status(401).send('Invalid credentials');
+//         }
+//         res.render('user/user_booking', { userdata: row});
+//     });
+// });
 //-------------------------USER action-----------------------
 //ลูกค้ากดสมัครสมาชิก
 app.post('/user_register_action', function (req, res) {
@@ -147,14 +165,16 @@ app.post('/user_login_action', (req, res) => {
     // ตรวจสอบข้อมูลล็อกอิน
     db.get('SELECT CustomerID FROM Customer WHERE Username = ? AND Password = ?', [username, password], (err, row) => {
         if (err || !row) {
-            return res.status(401).send('Invalid credentials');
+            return res.redirect('/user_login?success=not_found');
         }
         // บันทึก user_id ใน session
         req.session.user_id = row.CustomerID;
+        console.log("Start session User ID:", req.session.user_id);
         res.redirect("/user_homepage");
     });
 
 });
+//ลูกค้ากด logout
 app.get('/user_log_out', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -163,6 +183,7 @@ app.get('/user_log_out', (req, res) => {
         res.sendFile(path.join(__dirname, '/public/user/landingpage.html'));
     });
 });
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 })

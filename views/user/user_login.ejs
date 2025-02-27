@@ -8,8 +8,16 @@
 <body>
     <h3>ลงชื่อเข้าใช้</h3>
     <a href="/">หน้าหลัก</a>
-    <% if (typeof success !== 'undefined' && success === 'true') { %>
-        <p style="color: green;">สมัครบัญชีเสร็จสิ้น! กรุณาเข้าสู่ระบบ</p>
+    <% if (typeof success !== 'undefined') { %>
+        <% if (success === 'true') { %>
+            <div style="color: green;">
+                สมัครบัญชีเสร็จสิ้น! กรุณาเข้าสู่ระบบ
+            </div>
+        <% } else if (success === 'not_found') { %>
+            <div style="color: red;">
+                ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+            </div>
+        <% } %>
     <% } %>
     <form action="/user_login_action" method="POST">
         <label for="username">ชื่อบัญชื่อผู้ใช้</label>

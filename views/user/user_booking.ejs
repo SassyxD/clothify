@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Booking</h1>
+    <form action="" method="POST">
+        <label for="date">เลือกวัน</label>
+        <input type="date" id="datePicker" name="date"required><br><br>
+
+    
+
+        <label for="password">บริการ</label>
+        <select name="service" required>
+            <option>เลือกบริการ</option>
+            <option>ตัดสูทใหม่</option>
+            <option>แก้ไขปรับแต่งสูท</option>
+        </select>
+        <p>เลือกเวลา</p>
+        
+        <!-- 9.00 - 10.00 -->
+        <input type="radio" id="time1" name="gridRadios" value="9.00 - 10.00" required>
+        <label for="time1">9.00 - 10.00</label><br>
+
+        <!-- 10.00 - 11.00 -->
+        <input type="radio" id="time2" name="gridRadios" value="10.00 - 11.00" required>
+        <label for="time2">10.00 - 11.00</label><br>
+
+        <!-- 13.00 - 14.00 -->
+        <input type="radio" id="time3" name="gridRadios" value="13.00 - 14.00" required>
+        <label for="time3">13.00 - 14.00</label><br>
+
+        <!-- 15.00 - 16.00 -->
+        <input type="radio" id="time4" name="gridRadios" value="15.00 - 16.00" required>
+        <label for="time4">15.00 - 16.00</label><br>
+
+        <!-- 17.00 - 18.00 -->
+        <input type="radio" id="time5" name="gridRadios" value="17.00 - 18.00" required>
+        <label for="time5">17.00 - 18.00</label><br>
+
+        <button type="submit">ยืนยัน</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // ตั้งค่าให้ input รับค่าได้เฉพาะวันนี้เป็นต้นไป
+        document.addEventListener("DOMContentLoaded", function () {
+            let today = new Date().toISOString().split('T')[0];
+            document.getElementById("datePicker").setAttribute("min", today);
+        });
+    </script>
+</body>
+</html>
