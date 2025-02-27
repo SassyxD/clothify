@@ -3,7 +3,7 @@ const app = express()
 const port = 3000
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
-//const session = require('express-session');
+const session = require('express-session');
 
 // create directory 'public'
 app.use(express.static('public'));
@@ -15,14 +15,23 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Middleware เพื่ออ่านข้อมูลจาก form
 app.use(express.urlencoded({ extended: true }));
-
+// ---------------------- SESSION-----------------------
 // ตั้งค่า session
-// app.use(session({
-//   secret: 'my-suoer-secret-key-@#$$',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { secure: false } 
-// }));
+app.use(session({
+  secret: 'my-super-secret-key-@#$$',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } 
+}));
+
+// Middleware ตรวจสอบการล็อกอิน
+function isAuthenticated(req, res, next) {
+  if (req.session.user_id) {
+      next();
+  } else {
+      res.status(401).send('Unauthorized');
+  }
+}
 
 // Connect to SQLite database
 let db = new sqlite3.Database('clothify.db', (err) => {
@@ -32,14 +41,6 @@ let db = new sqlite3.Database('clothify.db', (err) => {
     console.log('Connected to the SQlite database.');
 });
 
-// Middleware ตรวจสอบการล็อกอิน
-// function isAuthenticated(req, res, next) {
-//   if (req.session.user_id) {
-//       next();
-//   } else {
-//       res.status(401).send('Unauthorized');
-//   }
-// }
 
 
 // ---------------------- ADMIN route-----------------------
@@ -63,12 +64,12 @@ app.post('/admin_login_action', function (req, res) {
             console.error('Error executing query:', err.message);
             return res.status(500).send('Internal Server Error');
         }
-        if (!admin) {
+        if (!admin) {//ไม่เจอบัญชี
             return res.redirect('/admin_login?error=user_not_found');
         }
 
         if (admin.Username !== formdata.Username || admin.Password !== formdata.Password) {
-            return res.redirect('/admin_login?error=invalid_credentials');
+            return res.redirect('/admin_login?error=invalid_credentials');//รหัสหรือบัญชีผิด
         }
         
         res.render('admin/admin_appointment');
@@ -80,7 +81,7 @@ app.get('/', function (req, res) {
 });
 //หน้าลููกค้าlogin
 app.get('/user_login', function (req, res) {
-    const success = req.query.success || null; // รับค่า success จาก query parameter
+    const success = req.query.success || null;
     res.render('user/user_login', { success: success });
 });
 //หน้าลูกค้าสมัครสมาชิก
@@ -88,7 +89,16 @@ app.get('/user_register', function (req, res) {
     const error = req.query.error || null;
     res.render('user/user_register', { error: error });
 });
-  
+//หน้าuserhomepage
+app.get('/user_homepage', function (req, res) {
+    const userid = req.session.user_id ;
+    db.get('SELECT FirstName FROM Customer WHERE CustomerID = ? ', [userid], (err, row) => {
+        if (err || !row) {
+            return res.status(401).send('Invalid credentials');
+        }
+        res.render('user/user_homepage', { firstname: row.FirstName});
+    });
+});
 //-------------------------USER action-----------------------
 //ลูกค้ากดสมัครสมาชิก
 app.post('/user_register_action', function (req, res) {
@@ -108,7 +118,7 @@ app.post('/user_register_action', function (req, res) {
         }
 
         if (row) {
-            // ถ้าพบ usernameหรือ emailซ้ำ
+            // ถ้าพบ username หรือ emailซ้ำ
             let errorMessage = '';
             if (row.Username === formdata.username) {
                 errorMessage = 'username_exists';
@@ -130,21 +140,29 @@ app.post('/user_register_action', function (req, res) {
         });
     });
 });
+//ลูกค้ากด login
+app.post('/user_login_action', (req, res) => {
+    const { username, password } = req.body;
 
-// app.post('/user_login_action', (req, res) => {
-//   const { username, password } = req.body;
+    // ตรวจสอบข้อมูลล็อกอิน
+    db.get('SELECT CustomerID FROM Customer WHERE Username = ? AND Password = ?', [username, password], (err, row) => {
+        if (err || !row) {
+            return res.status(401).send('Invalid credentials');
+        }
+        // บันทึก user_id ใน session
+        req.session.user_id = row.CustomerID;
+        res.redirect("/user_homepage");
+    });
 
-//   // ตรวจสอบข้อมูลล็อกอิน
-//   db.get('SELECT id FROM users WHERE Username = ? AND Password = ?', [username, password], (err, row) => {
-//       if (err || !row) {
-//           return res.status(401).send('Invalid credentials');
-//       }
-//       // บันทึก user_id ใน session
-//       req.session.user_id = row.id;
-//       res.send('Login successful');
-//   });
-// });
-
+});
+app.get('/user_log_out', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send('Could not log out');
+        }
+        res.sendFile(path.join(__dirname, '/public/user/landingpage.html'));
+    });
+});
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`)
+    console.log(`Server is running on port ${port}`)
 })
