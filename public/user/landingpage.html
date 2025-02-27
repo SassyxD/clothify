@@ -4,16 +4,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Clothify Landing Page</title>
+    <style>
+       .bar {
+            display: flex;
+            height: 75px;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #A6855D;
+            align-items: center;
+            
+        }
 
+        .links a{
+            font-size: 30px;
+            color: #0D0D0D;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 0;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }   
+
+        .bg{
+            margin: 0;
+            /*background-image: url('./image/landing_bg.png');*/
+        }
+            
+        
+        .logo{
+            color: black;
+            font-size: 70px;
+            font-weight: bold;
+        }
+        
+
+        .links a:hover{
+            background-color: black;
+            color: antiquewhite;
+        }
+
+        .bg {
+            background-image: url('./image/landing_bg.png');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        
+        
+
+        .container {
+            text-align: center;
+            margin-top: 15%;
+            color: #F2CA99;
+            max-height: 1080px;
+        }
+
+        .container h1 {
+            font-size: 128px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .container h3 {
+            font-size: 30px;
+            margin-bottom: 5%;
+            font-style: italic;
+            letter-spacing: 1px;
+            color: #A6855D;
+        }
+
+        .container a {
+            text-align: center;
+            padding-top: 15px;
+            margin-top: 5%;
+            font-size: 20px;
+            padding: 15px 30px;
+            color: black;
+            text-decoration: none;
+            background: #F2CA99;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .container a:hover {
+            color: black;
+            text-decoration: none;
+            background: #A6855D;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        @media (max-width: 1024px) {
+    .logo {
+        font-size: 45px;
+    }
+    .container h1 {
+        font-size: 10vw; /* Adjust heading */
+    }
+    .container h3 {
+        font-size: 5vw;
+    }
+    .container a {
+        font-size: 3.5vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .bar {
+        flex-direction: column;
+        text-align: center;
+    }
+    .logo {
+        font-size: 40px;
+    }
+    .links {
+        margin-top: 10px;
+    }
+    .links a {
+        display: block;
+        padding: 8px;
+        font-size: 22px;
+    }
+    .container h1 {
+        font-size: 12vw;
+    }
+    .container h3 {
+        font-size: 6vw;
+    }
+    .container a {
+        font-size: 4vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 35px;
+    }
+    .links a {
+        font-size: 20px;
+    }
+    .container h1 {
+        font-size: 14vw;
+    }
+    .container h3 {
+        font-size: 6vw;
+    }
+    .container a {
+        font-size: 5vw;
+    }
+}
+    </style>
 </head>
 
-<body>
-    <h1>Clothify</h1>
-    <a href="/user_login">ลงชื่อเข้าใช้</a>
-    <a href="/user_register">สมัครสมาชิก</a>
-    <p>สูทที่เข้ากับคุณที่สุด</p>
-
+<body class="bg">
+    <nav class="bar">
+        <div class="logo">
+            Clothify
+        </div>
+        <div class="links">
+            <a href="/user_login" >ลงชื่อเข้าใช้</a>
+            <a href="/user_register" >สมัครสมาชิก</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>ClOTHIFY</h1>
+        <h3>สูทที่เข้ากับคุณที่สุด</h3>
+        <a href="user_homepage">บริการของเรา</a>
+    </div>
 </body>
 
 </html>
