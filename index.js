@@ -78,6 +78,18 @@ app.post('/admin_login_action', function (req, res) {
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '/public/user/landingpage.html'));
 });
+//หน้าลููกค้าดูรายละเอียดแบบไม่ login
+app.get('/no_login_detail', function (req, res) {
+    res.sendFile(path.join(__dirname, '/public/user/no_login_detail.html'));
+});
+//หน้าลููกค้าดูรายละเอียดซ่อมสูทแบบไม่ login
+app.get('/no_login_fix_suit', function (req, res) {
+    res.sendFile(path.join(__dirname, '/public/user/no_login_fix_suit.html'));
+});
+//หน้าลููกค้าดูรายละเอียดซ่อมสูทแบบไม่ login
+app.get('/no_login_new_suit', function (req, res) {
+    res.sendFile(path.join(__dirname, '/public/user/no_login_new_suit.html'));
+});
 //หน้าลููกค้าlogin
 app.get('/user_login', function (req, res) {
     const success = req.query.success || null;
@@ -99,6 +111,10 @@ app.get('/user_homepage', function (req, res) {
     });
 });
 
+//หน้าลูกค้าแสดงตัดสูทใหม่
+app.get('/user_new_suit', (req, res) => {
+    res.render("user/user_new_suit");
+});
 //หน้าลูกค้าแสดงรายละเอียดแก้ไข/ปรับแต่งสูท
 app.get('/user_fix_suit', (req, res) => {
     res.render("user/user_fix_suit");
