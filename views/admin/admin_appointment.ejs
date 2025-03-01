@@ -4,8 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
 </head>
 <body>
     <h1>ระบบผู้จัดการ</h1>
+    <a href="/admin_log_out">ออกจากระบบ</a>
+    <a href="/admin_appointment">รายการนัด</a>
+    <a href="/admin_customer">จัดการลูกค้า</a>
+    <a href="/admin_employee">จัดการพนักงาน</a>
+    <h1>รายการนัดหมายลูกค้า</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>หมายเลขรายการ</th>
+                <th>ชื่อลูกค้า</th>
+                <th>สถานะนัด</th>
+                <th>พนักงานที่รับผิดชอบ</th>
+                <th>วันที่นัด</th>
+                <th>ช่วงเวลา</th>
+                <th>บริการ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% appointments.forEach((appointment) => { %>
+                <tr>
+                    <td><%= appointment.id %></td>
+                    <td><%= appointment.customerName %></td>
+                    <td><%= appointment.status %></td>
+                    <td><%= appointment.employeeName || 'ยังไม่มีพนักงานรับผิดชอบ' %></td>
+                    <td><%= appointment.date %></td>
+                    <td><%= appointment.timeSlot %></td>
+                    <td><%= appointment.service %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
 </body>
 </html>

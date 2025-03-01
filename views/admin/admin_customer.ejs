@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลลูกค้า</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>ระบบผู้จัดการ</h1>
+    <a href="/admin_log_out">ออกจากระบบ</a>
+    <a href="/admin_appointment">รายการนัด</a>
+    <a href="/admin_customer">จัดการลูกค้า</a>
+    <a href="/admin_employee">จัดการพนักงาน</a>
+    <h1>ข้อมูลลูกค้า</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>รหัสลูกค้า</th>
+                <th>ชื่อ</th>
+                <th>นามสกุล</th>
+                <th>เบอร์โทรศัพท์</th>
+                <th>อีเมล</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% customers.forEach((customer) => { %>
+                <tr>
+                    <td><%= customer.CustomerID %></td>
+                    <td><%= customer.FirstName %></td>
+                    <td><%= customer.LastName %></td>
+                    <td><%= customer.PhoneNumber %></td>
+                    <td><%= customer.Email %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

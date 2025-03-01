@@ -18,19 +18,19 @@ app.use(express.urlencoded({ extended: true }));
 // ---------------------- SESSION-----------------------
 // ตั้งค่า session
 app.use(session({
-  secret: 'my-super-secret-key-@#$$',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } 
+    secret: 'my-super-secret-key-@#$$',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
 }));
 
 // Middleware ตรวจสอบการล็อกอิน
 function isAuthenticated(req, res, next) {
-  if (req.session.user_id) {
-      next();
-  } else {
-      res.status(401).send('Unauthorized');
-  }
+    if (req.session.user_id) {
+        next();
+    } else {
+        res.status(401).send('Unauthorized');
+    }
 }
 // Connect to SQLite database
 let db = new sqlite3.Database('clothify.db', (err) => {
@@ -48,7 +48,57 @@ app.get('/admin_login', function (req, res) {
     const error = req.query.error || null;
     res.render('admin/admin_login', { error: error });
 });
+//หน้าแอดมิน แสดงรายการนัด
+app.get('/admin_appointment', function (req, res) {
+    const query = `
+        SELECT 
+            A.AppointmentID AS id,
+            C.FirstName || ' ' || C.LastName AS customerName,
+            A.Status AS status,
+            E.FirstName || ' ' || E.LastName AS employeeName,
+            A.AppointmentDate AS date,
+            A.TimeSlot AS timeSlot,
+            A.Service AS service
+        FROM Appointment A
+        LEFT JOIN Customer C ON A.CustomerID = C.CustomerID
+        LEFT JOIN Employee E ON A.EmployeeID = E.EmployeeID
+        `;
 
+        // ดึงข้อมูลจากฐานข้อมูล
+        db.all(query, [], (err, rows) => {
+            if (err) {
+                console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', err.message);
+                return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูล');
+            }
+
+            // ส่งข้อมูลไปยัง EJS template
+            res.render('admin/admin_appointment', { appointments: rows });
+        });
+});
+//หน้าแอดมิน แสดงข้อมูลลูกค้า
+app.get('/admin_customer', function (req, res) {
+    const sql = `
+        SELECT CustomerID, FirstName, LastName, PhoneNumber, Email
+        FROM Customer
+    `;
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูลลูกค้า');
+        }
+        res.render('admin/admin_customer', { customers: rows });
+    });
+});
+// admin Route สำหรับแสดงข้อมูลพนักงาน
+app.get('/admin_employee', function (req, res) {
+    const sql = 'SELECT * FROM Employee';
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน');
+        }
+        res.render('admin/admin_employee', { employees: rows });
+    });
+});
 //-------------------------ADMIN action-----------------------
 //แอดมินกด login
 app.post('/admin_login_action', function (req, res) {
@@ -70,10 +120,35 @@ app.post('/admin_login_action', function (req, res) {
         if (admin.Username !== formdata.Username || admin.Password !== formdata.Password) {
             return res.redirect('/admin_login?error=invalid_credentials');//รหัสหรือบัญชีผิด
         }
-        
-        res.render('admin/admin_appointment');
+        res.redirect("/admin_appointment");
     });
-  });
+});
+// admin กด logout
+app.get('/admin_log_out', (req, res) => {
+    res.redirect("/admin_login");
+});
+// admin เพิ่มพนักงาน
+app.post('/admin/employees/add', function (req, res) {
+    const { Username, Password, FirstName, LastName } = req.body;
+    const sql = 'INSERT INTO Employee (Username, Password, FirstName, LastName) VALUES (?, ?, ?, ?)';
+    db.run(sql, [Username, Password, FirstName, LastName], function (err) {
+        if (err) {
+            return res.status(500).send('เกิดข้อผิดพลาดในการเพิ่มพนักงาน');
+        }
+        res.redirect('/admin_employee');
+    });
+});
+// admin ลบพนักงาน
+app.post('/admin_employee_delete:id', function (req, res) {
+    const { id } = req.params;
+    const sql = 'DELETE FROM Employee WHERE EmployeeID = ?';
+    db.run(sql, [id], function (err) {
+        if (err) {
+            return res.status(500).send('เกิดข้อผิดพลาดในการลบพนักงาน');
+        }
+        res.redirect('/admin_employee');
+    });
+});
 // ---------------------- USER route------------------------
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '/public/user/landingpage.html'));
@@ -107,7 +182,7 @@ app.get('/user_homepage', function (req, res) {
             return res.status(401).send('Invalid credentials');
         }
         console.log("Go to user_homepage User ID:", req.session.user_id);
-        res.render('user/user_homepage', { firstname: row.FirstName});
+        res.render('user/user_homepage', { firstname: row.FirstName });
     });
 });
 
@@ -147,8 +222,8 @@ app.post('/user_register_action', function (req, res) {
     const checkSql = `SELECT * FROM Customer WHERE Username = ? OR Email = ?`;
     db.get(checkSql, [formdata.username, formdata.email], async (err, row) => {
         if (err) {
-        console.error('Error checking data:', err.message);
-        return res.status(500).send('Internal Server Error');
+            console.error('Error checking data:', err.message);
+            return res.status(500).send('Internal Server Error');
         }
 
         if (row) {
@@ -168,9 +243,9 @@ app.post('/user_register_action', function (req, res) {
             if (err) {
                 console.error('Error inserting data:', err.message);
                 return res.redirect('/user_register?error=registration_failed');
-              }
-              console.log('Data inserted successfully');
-              return res.redirect('/user_login?success=true');
+            }
+            console.log('Data inserted successfully');
+            return res.redirect('/user_login?success=true');
         });
     });
 });
