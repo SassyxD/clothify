@@ -263,7 +263,6 @@ app.post('/user_login_action', (req, res) => {
         console.log("Start session User ID:", req.session.user_id);
         res.redirect("/user_homepage");
     });
-
 });
 //ลูกค้ากด logout
 app.get('/user_log_out', (req, res) => {
@@ -272,6 +271,35 @@ app.get('/user_log_out', (req, res) => {
             return res.status(500).send('Could not log out');
         }
         res.sendFile(path.join(__dirname, '/public/user/landingpage.html'));
+    });
+});
+
+// ---------------------- EMPLOYEE route-----------------------
+//หน้าพนักงาน login
+app.get('/employee_login', function (req, res) {
+    const success = req.query.success || null;
+    res.render('employee/employee_login', { success: success });
+}
+);
+//homepage พนักงาน
+app.get('/employee_homepage', function (req, res) {
+    const success = req.query.success || null;
+    res.render('employee/employee_homepage', { success: success });
+}
+);
+// ---------------------- EMPLOYEE action----------------------
+app.post('/employee_login_action', (req, res) => {
+    const { username, password } = req.body;
+
+    // ตรวจสอบข้อมูลล็อกอิน
+    db.get('SELECT EmployeeID FROM Employee WHERE Username = ? AND Password = ?', [username, password], (err, row) => {
+        if (err || !row) {
+            return res.redirect('/employee_login?success=not_found');
+        }
+        // บันทึก user_id ใน session
+        req.session.employee_id = row.EmployeeID;
+        console.log("Start session Employee ID:", req.session.employee_id);
+        res.redirect("/employee_homepage");
     });
 });
 
