@@ -154,8 +154,8 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '/public/user/landingpage.html'));
 });
 //หน้าลููกค้าดูรายละเอียดแบบไม่ login
-app.get('/no_login_detail', function (req, res) {
-    res.sendFile(path.join(__dirname, '/public/user/no_login_detail.html'));
+app.get('/no_login_home', function (req, res) {
+    res.sendFile(path.join(__dirname, '/public/user/no_login_home.html'));
 });
 //หน้าลููกค้าดูรายละเอียดซ่อมสูทแบบไม่ login
 app.get('/no_login_fix_suit', function (req, res) {
