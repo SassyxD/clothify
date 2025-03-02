@@ -67,13 +67,18 @@
                     <td><%= employee.Username %></td>
                     <td><%= employee.Password %></td>
                     <td>
-                        <form action="/admin_employee_delete<%= employee.EmployeeID %>" method="POST" style="display: inline;">
+                        <form action="/admin_employee_delete<%= employee.EmployeeID %>" method="POST" style="display: inline;" onsubmit="return confirmDelete('<%= employee.FirstName %>', '<%= employee.LastName %>')">
                             <button type="submit">ลบ</button>
-                        </form>
+                        </form>                        
                     </td>
                 </tr>
             <% }); %>
         </tbody>
     </table>
+    <script>
+        function confirmDelete(firstName, lastName) {
+            return confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบพนักงาน ${firstName} ${lastName} ?`);
+        }
+    </script>
 </body>
 </html>

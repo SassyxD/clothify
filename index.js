@@ -283,10 +283,45 @@ app.get('/employee_login', function (req, res) {
 );
 //homepage พนักงาน
 app.get('/employee_homepage', function (req, res) {
-    const success = req.query.success || null;
-    res.render('employee/employee_homepage', { success: success });
-}
-);
+    const employeeID = req.session.employee_id;
+
+    // ตรวจสอบว่าพนักงานเข้าสู่ระบบหรือไม่
+    if (!employeeID) {
+        return res.redirect('/employee_login'); // เปลี่ยนเส้นทางไปยังหน้า login
+    }
+
+    // ดึงข้อมูลพนักงานจากฐานข้อมูล
+    db.get('SELECT FirstName, LastName FROM Employee WHERE EmployeeID = ?', [employeeID], (err, employee) => {
+        if (err || !employee) {
+            return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน');
+        }
+
+        // ดึงข้อมูลนัดลูกค้าที่เกี่ยวข้องกับพนักงาน
+        const sql = `
+            SELECT 
+                Appointment.AppointmentID,
+                Appointment.AppointmentDate,
+                Appointment.TimeSlot,
+                Appointment.Service,
+                Appointment.Status,
+                Customer.FirstName AS CustomerFirstName,
+                Customer.LastName AS CustomerLastName
+            FROM Appointment
+            LEFT JOIN Customer ON Appointment.CustomerID = Customer.CustomerID
+            WHERE Appointment.EmployeeID = ? OR Appointment.EmployeeID IS NULL
+        `;
+
+        db.all(sql, [employeeID], (err, appointments) => {
+            if (err) {
+                return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูลนัดลูกค้า');
+            }
+            res.render('employee/employee_homepage', { 
+                employee: employee, 
+                appointments: appointments 
+            });
+        });
+    });
+});
 // ---------------------- EMPLOYEE action----------------------
 app.post('/employee_login_action', (req, res) => {
     const { username, password } = req.body;
@@ -297,12 +332,43 @@ app.post('/employee_login_action', (req, res) => {
             return res.redirect('/employee_login?success=not_found');
         }
         // บันทึก user_id ใน session
+        console.log(row);
         req.session.employee_id = row.EmployeeID;
         console.log("Start session Employee ID:", req.session.employee_id);
         res.redirect("/employee_homepage");
     });
 });
+//พนักงานกด logout
+app.get('/employee_logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send('Could not log out');
+        }
+        res.redirect("/employee_login");
+    });
+});
+//พนักงานกดรับนัด
+app.post('/employee/accept_appointment/:id', function (req, res) {
+    const appointmentID = req.params.id;
+    const employeeID = req.session.employee_id;
 
+    // อัปเดต EmployeeID และสถานะในตาราง Appointment
+    const sql = `
+        UPDATE Appointment
+        SET EmployeeID = ?, Status = 'จอง'
+        WHERE AppointmentID = ? AND Status = 'รอการยืนยัน'
+    `;
+
+    db.run(sql, [employeeID, appointmentID], function (err) {
+        if (err) {
+            return res.status(500).send('เกิดข้อผิดพลาดในการจองนัด');
+        }
+        if (this.changes === 0) {
+            return res.status(400).send('ไม่สามารถจองนัดนี้ได้');
+        }
+        res.redirect('/employee_homepage');
+    });
+});
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 })
