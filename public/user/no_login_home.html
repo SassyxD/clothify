@@ -6,21 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/user/Home.css">
+    <link rel="stylesheet" href="/css/user/nav_nologin.css">
+    <link rel="stylesheet" href="/css/user/home.css">
 </head>
 
 <body>
-    <h1>no login detail</h1>
-    <a href="/user_login">ลงชื่อเข้าใช้</a>
-    <a href="/user_register">สมัครสมาชิก</a>
-
-    
-    <a href="/no_login_new_suit">
-        <p>ตัดสูทใหม่</p>
-    </a>
-    <a href="/no_login_fix_suit">
-        <p>แก้ไขปรับแต่งสูท</p>
-    </a>
+    <div class="navbar_nologin">
+        <a href="" class="logo">ClOTHIFY</a>  
+        <div class="navlinks_nologin">
+            <div class="links">
+                <img src="/svg/history.svg" alt="">
+                <a href="">ประวัติการนัด</a>
+            </div>
+            <div class="dropdown_container">
+                <button class="btn_drop">
+                    <img src="/svg/contact.svg" alt="">
+                    ติดต่อ
+                </button>
+                <div class="drop_content">
+                    <p>123456789</p>
+                    <p>@gmail.com</p>
+                </div>
+            </div>
+            <div class="links">
+                <img src="/svg/users.svg" alt="">
+                <a href="/user_login">เข้าสู่ระบบ</a>
+            </div>
+        </div>   
+    </div>
+    <div class="container-fluid">
+        <h1>บริการคุณภาพ <br> จากมืออาชีพ</h1>
+        <p>ประสบการบริการแต่งสูทโดยช่างช่างตัดสูทมืออาชีพและ
+            ตรวจแสดงบริการที่ตรงตามความสะดวกและโดดเด่นขอมูลและวิถีของแพลตโฟรมที่ทันสมัย</p>
+        <div class="card-container">
+            
+                <a href="/no_login_new_suit" class="newsuit_card">
+                    <h3>ตัดสูทใหม่</h3>
+                    <p>รายละเอียด</p>
+                </a>
+            
+            
+                
+                <a href="/no_login_fix_suit" class="refit_card">            
+                    <h3>แก้ไขปรับแต่งสูท</h3>
+                    <p>รายละเอียด</p>
+                </a>
+           
+        </div>
+    </div>
 </body>
 
 </html>

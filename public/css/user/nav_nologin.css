@@ -1,0 +1,82 @@
+.navbar_nologin{
+    position: fixed;
+    width: 100%;
+    height: 70px;
+    background-color: #A6855D;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    top: 0;
+    left: 0;
+}
+
+.logo{
+    text-decoration: none;
+    height:70px;
+    color: black;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.navlinks_nologin{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 70px;
+}
+
+.navlinks_nologin a{
+    text-decoration: none;
+    
+}
+
+.dropdown_container{
+    float: left;
+    overflow: hidden;
+    
+}
+
+.btn_drop{
+    background-color: #A6855D;
+    border: none;
+    height: 70px;
+}
+
+.btn_drop img{
+    width: 30px;
+    height: 30px;
+
+}
+
+.links:hover, .btn_drop:hover, .logo:hover{
+    background-color: #F2CA99;
+}
+
+.links{
+    align-items: center;
+    background-color: #A6855D;
+    display: flex;
+    height: 70px;
+}
+
+.links a{
+    text-decoration: none;
+    color: black;
+}
+
+.links img{
+    width: 25px;
+    height: 25px;
+}
+
+.drop_content{
+    display: none;
+    position: absolute;
+    padding: 10px;
+    background-color: #A6855D;
+}
+
+
+.dropdown_container:hover .drop_content {
+    display: block;
+  }

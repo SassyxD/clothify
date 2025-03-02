@@ -1,4 +1,80 @@
-.navbar{
-    position: fixed;
-
+.container-fluid{
+    padding: 50px;
+    margin-top: 5%;
 }
+
+.container-fluid::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/image/home_bg.png'); 
+    background-size: cover; 
+    background-position: center;
+    filter: brightness(40%);
+    z-index: -1;
+}
+
+.container-fluid h1 {
+   color: #F2CA99;
+   font-weight: bold;
+   font-size: 70px;
+}
+
+.container-fluid p{
+    color: #A6855D;
+}
+
+
+.newsuit_card, .refit_card{
+    position: relative;
+    text-decoration: none;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+    height: 400px;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    justify-content: center; 
+    color: #A6855D;
+    transition: filter 0.5s ease-in-out;   
+}
+
+.newsuit_card h3, .refit_card h3{
+    color: #F2CA99;
+    font-weight: bold;
+    transition: transform 0.3s ease-in-out;
+    transform-origin: center;
+}
+
+.newsuit_card{
+    background-image: url('/image/newsuit_card_bg.png');
+}
+
+.refit_card{
+    background-image: url('/image/refit_crad_bg.png');
+}
+
+.newsuit_card:hover, .refit_card:hover {
+    filter: brightness(120%);
+}
+
+.newsuit_card:hover h3, .refit_card:hover h3{
+    transform: scale(1.5);
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 50px;
+    width: 100%;
+    padding: 20px;
+}
+
+
