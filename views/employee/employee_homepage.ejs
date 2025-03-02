@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Homepage</title>
+    <style>
+        .welcome-message {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <% if (employee_id) { %>
-        <h1>Welcome, Employee!</h1>
-        <p>Your Employee ID: <%= employee_id %></p>
-        <a href="/employee_logout">Logout</a>
-    <% } else { %>
-        <p>You are not logged in. <a href="/employee_login">Login here</a></p>
-    <% } %>
+    <div class="welcome-message">
+            <p>สวัสดีคุณ <%= employee.FirstName %> <%= employee.LastName %></p> 
+    </div>
+
+    <a href="/employee_logout">ออกจากระบบ</a>
 </body>
 </html>

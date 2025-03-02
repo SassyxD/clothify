@@ -284,9 +284,21 @@ app.get('/employee_login', function (req, res) {
 //homepage พนักงาน
 app.get('/employee_homepage', function (req, res) {
     const success = req.query.success || null;
-    res.render('employee/employee_homepage', { success: success });
-}
-);
+    const employeeID = req.session.employee_id;
+
+    // ตรวจสอบว่าพนักงานเข้าสู่ระบบหรือไม่
+    if (!employeeID) {
+        return res.redirect('/employee_login'); // เปลี่ยนเส้นทางไปยังหน้า login
+    }
+
+    // ดึงข้อมูลพนักงานจากฐานข้อมูล
+    db.get('SELECT FirstName, LastName FROM Employee WHERE EmployeeID = ?', [employeeID], (err, row) => {
+        if (err || !row) {
+            return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน');
+        }
+        res.render('employee/employee_homepage', { success: success, employee: row });
+    });
+});
 // ---------------------- EMPLOYEE action----------------------
 app.post('/employee_login_action', (req, res) => {
     const { username, password } = req.body;
@@ -297,12 +309,21 @@ app.post('/employee_login_action', (req, res) => {
             return res.redirect('/employee_login?success=not_found');
         }
         // บันทึก user_id ใน session
+        console.log(row);
         req.session.employee_id = row.EmployeeID;
         console.log("Start session Employee ID:", req.session.employee_id);
         res.redirect("/employee_homepage");
     });
 });
-
+//พนักงานกด logout
+app.get('/employee_logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send('Could not log out');
+        }
+        res.redirect("/employee_login");
+    });
+});
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 })
