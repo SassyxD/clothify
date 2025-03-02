@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,13 +11,102 @@
             font-weight: bold;
             margin-bottom: 20px;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .action-button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
+
 <body>
     <div class="welcome-message">
-            <p>สวัสดีคุณ <%= employee.FirstName %> <%= employee.LastName %></p> 
+        <% if (typeof employee !=='undefined' ) { %>
+            ยินดีต้อนรับ, <%= employee.FirstName %>
+                <%= employee.LastName %>!
+                    <% } else { %>
+                        ไม่พบข้อมูลพนักงาน
+                        <% } %>
     </div>
 
     <a href="/employee_logout">ออกจากระบบ</a>
+    <!-- ตารางรายการนัดลูกค้า -->
+    <h2>รายการนัดลูกค้า</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>รหัสนัด</th>
+                <th>วันที่นัด</th>
+                <th>เวลานัด</th>
+                <th>บริการ</th>
+                <th>สถานะ</th>
+                <th>ชื่อลูกค้า</th>
+                <th>การดำเนินการ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% appointments.forEach((appointment)=> { %>
+                <tr>
+                    <td>
+                        <%= appointment.AppointmentID %>
+                    </td>
+                    <td>
+                        <%= appointment.AppointmentDate %>
+                    </td>
+                    <td>
+                        <%= appointment.TimeSlot %>
+                    </td>
+                    <td>
+                        <%= appointment.Service %>
+                    </td>
+                    <td>
+                        <%= appointment.Status %>
+                    </td>
+                    <td>
+                        <%= appointment.CustomerFirstName %>
+                            <%= appointment.CustomerLastName %>
+                    </td>
+                    <td>
+                        <% if (appointment.Status === 'รอการยืนยัน') { %>
+                            <form action="/employee/accept_appointment/<%= appointment.AppointmentID %>" method="POST" style="display: inline;" onsubmit="return confirmBooking()">
+                                <button type="submit" class="action-button">จองนัด</button>
+                            </form>
+                        <% } %>
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+    <script>
+        // ฟังก์ชันสำหรับแสดงกล่องข้อความยืนยัน
+        function confirmBooking() {
+            return confirm('ยืนยันการจอง?');
+        }
+    </script>
 </body>
+
 </html>

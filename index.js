@@ -283,7 +283,6 @@ app.get('/employee_login', function (req, res) {
 );
 //homepage พนักงาน
 app.get('/employee_homepage', function (req, res) {
-    const success = req.query.success || null;
     const employeeID = req.session.employee_id;
 
     // ตรวจสอบว่าพนักงานเข้าสู่ระบบหรือไม่
@@ -292,11 +291,35 @@ app.get('/employee_homepage', function (req, res) {
     }
 
     // ดึงข้อมูลพนักงานจากฐานข้อมูล
-    db.get('SELECT FirstName, LastName FROM Employee WHERE EmployeeID = ?', [employeeID], (err, row) => {
-        if (err || !row) {
+    db.get('SELECT FirstName, LastName FROM Employee WHERE EmployeeID = ?', [employeeID], (err, employee) => {
+        if (err || !employee) {
             return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน');
         }
-        res.render('employee/employee_homepage', { success: success, employee: row });
+
+        // ดึงข้อมูลนัดลูกค้าที่เกี่ยวข้องกับพนักงาน
+        const sql = `
+            SELECT 
+                Appointment.AppointmentID,
+                Appointment.AppointmentDate,
+                Appointment.TimeSlot,
+                Appointment.Service,
+                Appointment.Status,
+                Customer.FirstName AS CustomerFirstName,
+                Customer.LastName AS CustomerLastName
+            FROM Appointment
+            LEFT JOIN Customer ON Appointment.CustomerID = Customer.CustomerID
+            WHERE Appointment.EmployeeID = ? OR Appointment.EmployeeID IS NULL
+        `;
+
+        db.all(sql, [employeeID], (err, appointments) => {
+            if (err) {
+                return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูลนัดลูกค้า');
+            }
+            res.render('employee/employee_homepage', { 
+                employee: employee, 
+                appointments: appointments 
+            });
+        });
     });
 });
 // ---------------------- EMPLOYEE action----------------------
@@ -322,6 +345,28 @@ app.get('/employee_logout', (req, res) => {
             return res.status(500).send('Could not log out');
         }
         res.redirect("/employee_login");
+    });
+});
+//พนักงานกดรับนัด
+app.post('/employee/accept_appointment/:id', function (req, res) {
+    const appointmentID = req.params.id;
+    const employeeID = req.session.employee_id;
+
+    // อัปเดต EmployeeID และสถานะในตาราง Appointment
+    const sql = `
+        UPDATE Appointment
+        SET EmployeeID = ?, Status = 'จอง'
+        WHERE AppointmentID = ? AND Status = 'รอการยืนยัน'
+    `;
+
+    db.run(sql, [employeeID, appointmentID], function (err) {
+        if (err) {
+            return res.status(500).send('เกิดข้อผิดพลาดในการจองนัด');
+        }
+        if (this.changes === 0) {
+            return res.status(400).send('ไม่สามารถจองนัดนี้ได้');
+        }
+        res.redirect('/employee_homepage');
     });
 });
 app.listen(port, () => {
