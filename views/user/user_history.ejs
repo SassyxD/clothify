@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ประวัติการนัดหมาย</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <h1>ประวัติการนัดหมาย</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>วันที่นัด</th>
+                <th>ช่วงเวลา</th>
+                <th>บริการ</th>
+                <th>สถานะ</th>
+                <th>การดำเนินการ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% appointments.forEach(appointment => { %>
+                <tr>
+                    <td><%= appointment.AppointmentID %></td>
+                    <td><%= appointment.AppointmentDate %></td>
+                    <td><%= appointment.TimeSlot %></td>
+                    <td><%= appointment.Service %></td>
+                    <td><%= appointment.Status %></td>
+                    <td>
+                        <% if (appointment.Status === 'รอการยืนยัน' || appointment.Status === 'จอง') { %>
+                            <form action="/user_history/cancel/<%= appointment.AppointmentID %>" method="POST" style="display: inline;" onsubmit="return confirm('คุณแน่ใจหรือไม่ที่จะยกเลิกนัดหมายนี้?')">
+                                <button type="submit">ยกเลิก</button>
+                            </form>
+                        <% } %>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</body>
+
+</html>

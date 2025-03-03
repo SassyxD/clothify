@@ -198,16 +198,45 @@ app.get('/user_fix_suit', (req, res) => {
 app.get('/user_booking', function (req, res) {
     res.render('user/user_booking',);
 });
-// //หน้ายืนยันจอง
-// app.get('/user_booking', function (req, res) {
-//     db.get('SELECT * FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
-//         console.log("User ID:", req.session.user_id);
-//         if (err || !row) {
-//             return res.status(401).send('Invalid credentials');
-//         }
-//         res.render('user/user_booking', { userdata: row});
-//     });
-// });
+// Route to display customer appointments
+app.get('/user_history', (req, res) => {
+    const customerId = req.session.user_id;
+    const sql = `
+        SELECT 
+            Appointment.AppointmentID,
+            Appointment.AppointmentDate,
+            Appointment.TimeSlot,
+            Appointment.Service,
+            Appointment.Status
+        FROM 
+            Appointment
+        WHERE 
+            Appointment.CustomerID = ?
+    `;
+    db.all(sql, [customerId], (err, appointments) => {
+        if (err) {
+            console.error('Error fetching appointments:', err.message);
+            res.status(500).send('Internal Server Error');
+        } else {
+            res.render('user/user_history', { appointments });
+        }
+    });
+});
+// Route to handle cancel appointment
+app.post('/user_history/cancel/:id', (req, res) => {
+    const appointmentId = req.params.id;
+    const customerId = req.session.user_id;
+
+    const sql = `UPDATE Appointment SET Status = 'ยกเลิก' WHERE AppointmentID = ? AND CustomerID = ?`;
+    db.run(sql, [appointmentId, customerId], (err) => {
+        if (err) {
+            console.error('Error canceling appointment:', err.message);
+            res.status(500).send('Internal Server Error');
+        } else {
+            res.redirect('user/user_history');
+        }
+    });
+});
 //-------------------------USER action-----------------------
 //ลูกค้ากดสมัครสมาชิก
 app.post('/user_register_action', function (req, res) {
