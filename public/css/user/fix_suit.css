@@ -1,0 +1,67 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    color: #A6855D;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/image/home_bg.png'); 
+    background-size: cover; 
+    background-position: center;
+    filter: brightness(40%);
+    z-index: -1;
+}
+.container h1 {
+    color: #F2CA99;
+    font-weight: bold;
+    font-size: 70px;
+ }
+
+.log-button, .regis-button, .back-button, .success-button{
+    display: block;
+    width: 130px;
+    padding: 10px;
+    text-align: center;
+    background: #e0c9a6;
+    color: black;
+    text-decoration: none;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.log {
+    display: flex;
+    gap: 20px;
+    margin-left: 20px;
+}
+
+.log1 {
+    display: flex;
+    gap: 20px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+}
+
+.container a:hover {
+    color: black;
+    text-decoration: none;
+    background: #A6855D;
+    border-radius: 10px;
+    transition: background-color 0.3s, transform 0.3s;
+}

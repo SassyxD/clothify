@@ -1,18 +1,19 @@
-body {
-    font-family: sans-serif;
+html, body {
     background-color: #000;
+    width: 100%;
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
     display: flex;
     font-size: 20px;
-    margin-top: 15%;
 }
 
 .left {
     flex: 1;
-    padding: 20px;
     color: #A6855D;
 }
 
@@ -26,20 +27,35 @@ body {
     display: flex;
     flex: 1;
     gap: 10px;
-    background: #c9a472;
-    padding: 10px;
-    justify-content: space-between;
 }
 
-.suit-option {
-    background: rgba(255, 255, 255, 0.2);
+.suit-option1 {
+    background: #A6855D;
     padding: 10px;
     text-align: center;
     border-radius: 5px;
     flex: 1;
     color: black;
 }
-y
+
+.suit-option2 {
+    background: #F2CA99;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    flex: 1;
+    color: black;
+}
+
+.suit-option3 {
+    background: #F2CA99;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    flex: 1;
+    color: black;
+}
+
 .suit-option h3 {
 
     color: white;
