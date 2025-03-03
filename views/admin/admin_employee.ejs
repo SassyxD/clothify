@@ -1,84 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>จัดการพนักงาน</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/user/nav_admin.css">
     <style>
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             padding: 10px;
             border: 1px solid #ddd;
             text-align: left;
         }
+
         th {
             background-color: #f4f4f4;
         }
+
         .form-container {
             margin-bottom: 20px;
         }
+
         .form-container input {
             margin-right: 10px;
         }
     </style>
 </head>
+
 <body>
-    <h1>ระบบผู้จัดการ</h1>
-    <a href="/admin_log_out">ออกจากระบบ</a>
-    <a href="/admin_appointment">รายการนัด</a>
-    <a href="/admin_customer">จัดการลูกค้า</a>
-    <a href="/admin_employee">จัดการพนักงาน</a>
-    <h1>จัดการพนักงาน</h1>
+    <%- include('admin_nav') %>
+        <div class="container">
+            <h1>จัดการพนักงาน</h1>
 
-    <!-- ฟอร์มเพิ่มพนักงาน -->
-    <div class="form-container">
-        <h2>เพิ่มพนักงาน</h2>
-        <form action="/admin/employees/add" method="POST">
-            <input type="text" name="Username" placeholder="Username" required>
-            <input type="password" name="Password" placeholder="Password" required>
-            <input type="text" name="FirstName" placeholder="First Name" required>
-            <input type="text" name="LastName" placeholder="Last Name" required>
-            <button type="submit">เพิ่มพนักงาน</button>
-        </form>
-    </div>
+            <!-- ฟอร์มเพิ่มพนักงาน -->
+            <div class="form-container">
+                <h2>เพิ่มพนักงาน</h2>
+                <form action="/admin/employees/add" method="POST">
+                    <input type="text" name="Username" placeholder="Username" required>
+                    <input type="password" name="Password" placeholder="Password" required>
+                    <input type="text" name="FirstName" placeholder="First Name" required>
+                    <input type="text" name="LastName" placeholder="Last Name" required>
+                    <button type="submit">เพิ่มพนักงาน</button>
+                </form>
+            </div>
 
-    <!-- ตารางแสดงข้อมูลพนักงาน -->
-    <h2>รายการพนักงาน</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>รหัสพนักงาน</th>
-                <th>ชื่อ</th>
-                <th>นามสกุล</th>
-                <th>ชื่อบัญชี</th>
-                <th>รหัสผ่าน</th>
-                <th>การดำเนินการ</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% employees.forEach((employee) => { %>
-                <tr>
-                    <td><%= employee.EmployeeID %></td>
-                    <td><%= employee.FirstName %></td>
-                    <td><%= employee.LastName %></td>
-                    <td><%= employee.Username %></td>
-                    <td><%= employee.Password %></td>
-                    <td>
-                        <form action="/admin_employee_delete<%= employee.EmployeeID %>" method="POST" style="display: inline;" onsubmit="return confirmDelete('<%= employee.FirstName %>', '<%= employee.LastName %>')">
-                            <button type="submit">ลบ</button>
-                        </form>                        
-                    </td>
-                </tr>
-            <% }); %>
-        </tbody>
-    </table>
-    <script>
-        function confirmDelete(firstName, lastName) {
-            return confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบพนักงาน ${firstName} ${lastName} ?`);
-        }
-    </script>
+            <!-- ตารางแสดงข้อมูลพนักงาน -->
+            <h2>รายการพนักงาน</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>รหัสพนักงาน</th>
+                        <th>ชื่อ</th>
+                        <th>นามสกุล</th>
+                        <th>ชื่อบัญชี</th>
+                        <th>รหัสผ่าน</th>
+                        <th>การดำเนินการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% employees.forEach((employee)=> { %>
+                        <tr>
+                            <td>
+                                <%= employee.EmployeeID %>
+                            </td>
+                            <td>
+                                <%= employee.FirstName %>
+                            </td>
+                            <td>
+                                <%= employee.LastName %>
+                            </td>
+                            <td>
+                                <%= employee.Username %>
+                            </td>
+                            <td>
+                                <%= employee.Password %>
+                            </td>
+                            <td>
+                                <form action="/admin_employee_delete<%= employee.EmployeeID %>" method="POST"
+                                    style="display: inline;"
+                                    onsubmit="return confirmDelete('<%= employee.FirstName %>', '<%= employee.LastName %>')">
+                                    <button type="submit">ลบ</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+            <script>
+                function confirmDelete(firstName, lastName) {
+                    return confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบพนักงาน ${firstName} ${lastName} ?`);
+                }
+            </script>
+        </div>
 </body>
+
 </html>
