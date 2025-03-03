@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <a href="/user_log_out">ออกจากระบบ</a>
+    <a href="/user_history">ประวัติการนัด</a>
+    <a href="/user_homepage">ย้อนกลับ</a>
     <h1>ประวัติการนัดหมาย</h1>
     <table>
         <thead>
@@ -28,7 +31,14 @@
                     <td><%= appointment.AppointmentDate %></td>
                     <td><%= appointment.TimeSlot %></td>
                     <td><%= appointment.Service %></td>
-                    <td><%= appointment.Status %></td>
+                    <td>
+                        <% if (appointment.Status === 'จอง') { %>
+                            พนักงานรับนัด
+                        <% } else { %>
+                            <%= appointment.Status %>
+                        <% } %>
+                    </td>
+                    
                     <td>
                         <% if (appointment.Status === 'รอการยืนยัน' || appointment.Status === 'จอง') { %>
                             <form action="/user_history/cancel/<%= appointment.AppointmentID %>" method="POST" style="display: inline;" onsubmit="return confirm('คุณแน่ใจหรือไม่ที่จะยกเลิกนัดหมายนี้?')">

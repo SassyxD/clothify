@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ชำระเงินด้วย PromptPay</title>
+</head>
+
+<body>
+    <a href="/user_log_out">ออกจากระบบ</a>
+    <a href="/user_history">ประวัติการนัด</a>
+    <a href="/user_homepage">หน้าหลัก</a>
+    <h1>สแกน QR Code เพื่อชำระเงิน</h1>
+    <img src="<%= qrCode %>" alt="PromptPay QR Code">
+    <form action="/payment-success" method="POST">
+        <input type="hidden" name="date" value="<%= date %>">
+        <input type="hidden" name="service" value="<%= service %>">
+        <input type="hidden" name="time" value="<%= time %>">
+        <button type="submit">ชำระเงินเสร็จสิ้น</button>
+    </form>
+</body>
+
+</html>

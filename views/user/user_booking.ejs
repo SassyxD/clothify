@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Booking</title>
 </head>
 <body>
+    <a href="/user_log_out">ออกจากระบบ</a>
+    <a href="/user_history">ประวัติการนัด</a>
+    <a href="/user_homepage">หน้าหลัก</a>
     <h1>Booking</h1>
-    <form action="" method="POST">
+    <form action="/user_review" method="POST">
         <label for="date">เลือกวัน</label>
-        <input type="date" id="datePicker" name="date"required><br><br>
+        <input type="date" id="datePicker" name="date" required><br><br>
 
-    
-
-        <label for="password">บริการ</label>
+        <label for="service">บริการ</label>
         <select name="service" required>
             <option>เลือกบริการ</option>
             <option>ตัดสูทใหม่</option>
             <option>แก้ไขปรับแต่งสูท</option>
         </select>
         <p>เลือกเวลา</p>
-        
+
         <!-- 9.00 - 10.00 -->
         <input type="radio" id="time1" name="gridRadios" value="9.00 - 10.00" required>
         <label for="time1">9.00 - 10.00</label><br>
@@ -41,9 +42,8 @@
         <input type="radio" id="time5" name="gridRadios" value="17.00 - 18.00" required>
         <label for="time5">17.00 - 18.00</label><br>
 
-        <button type="submit">ยืนยัน</button>
+        <button type="submit">ตรวจสอบข้อมูล</button>
     </form>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         // ตั้งค่าให้ input รับค่าได้เฉพาะวันนี้เป็นต้นไป
         document.addEventListener("DOMContentLoaded", function () {

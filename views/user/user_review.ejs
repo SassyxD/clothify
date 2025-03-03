@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Booking</title>
+</head>
+<body>
+    <a href="/user_log_out">ออกจากระบบ</a>
+    <a href="/user_history">ประวัติการนัด</a>
+    <a href="/user_homepage">หน้าหลัก</a>
+    <h1>ตรวจสอบข้อมูล</h1>
+    <p>วันที่: <%= date %></p>
+    <p>บริการ: <%= service %></p>
+    <p>เวลา: <%= time %></p>
+    <form action="/generate-qr" method="POST">
+        <input type="hidden" name="date" value="<%= date %>">
+        <input type="hidden" name="service" value="<%= service %>">
+        <input type="hidden" name="time" value="<%= time %>">
+        <button type="submit">ยืนยันการจองและชำระเงิน</button>
+    </form>
+</body>
+</html>

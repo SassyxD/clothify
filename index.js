@@ -4,6 +4,7 @@ const port = 3000
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const session = require('express-session');
+const qrcode = require('qrcode');
 // ยยย
 // create directory 'public'
 app.use(express.static('public'));
@@ -222,7 +223,7 @@ app.get('/user_history', (req, res) => {
         }
     });
 });
-// Route to handle cancel appointment
+//ลูกค้ากดยกเลิก
 app.post('/user_history/cancel/:id', (req, res) => {
     const appointmentId = req.params.id;
     const customerId = req.session.user_id;
@@ -233,7 +234,7 @@ app.post('/user_history/cancel/:id', (req, res) => {
             console.error('Error canceling appointment:', err.message);
             res.status(500).send('Internal Server Error');
         } else {
-            res.redirect('user/user_history');
+            res.redirect('/user_history');
         }
     });
 });
@@ -300,6 +301,57 @@ app.get('/user_log_out', (req, res) => {
             return res.status(500).send('Could not log out');
         }
         res.sendFile(path.join(__dirname, '/public/user/landingpage.html'));
+    });
+});
+// Route to handle form submission and display review page
+app.post('/user_review', (req, res) => {
+    const { date, service, gridRadios: time } = req.body;
+    res.render('user/user_review', { date, service, time });
+});
+
+app.post('/generate-qr', (req, res) => {
+    const { date, service, time } = req.body; // รับค่าจาก req.body
+    const paymentData = '00020101021129370016A000000677010111011300660000000005802TH530376463048956'; // PromptPay payload
+
+    qrcode.toDataURL(paymentData, (err, url) => {
+        if (err) {
+            console.error('Error generating QR code:', err);
+            res.status(500).send('Error generating QR code');
+        } else {
+            res.render('user/user_generate_qr', { qrCode: url, date, service, time });
+        }
+    });
+});
+
+// Route to handle payment success
+app.post('/payment-success', (req, res) => {
+    const { date, service, time } = req.body; // รับค่าจาก req.body
+
+    // ตรวจสอบข้อมูล
+    if (!date || !service || !time) {
+        return res.status(400).send('ข้อมูลไม่ครบถ้วน');
+    }
+
+    // ตรวจสอบว่าลูกค้าล็อกอินหรือไม่
+    const customerId = req.session.user_id;
+    if (!customerId) {
+        return res.status(401).send('กรุณาล็อกอินก่อนทำการจอง');
+    }
+
+    // Insert booking into Appointment table
+    const sql = `
+        INSERT INTO Appointment (CustomerID, AppointmentDate, TimeSlot, Service, Status)
+        VALUES (?, ?, ?, ?, 'รอการยืนยัน')
+    `;
+
+    db.run(sql, [customerId, date, time, service], function (err) {
+        if (err) {
+            console.error('Error saving appointment:', err.message);
+            return res.status(500).send('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+        } else {
+            console.log(`Appointment saved with ID: ${this.lastID}`);
+            res.render('user/user_payment_success');
+        }
     });
 });
 
