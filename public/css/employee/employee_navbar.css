@@ -1,0 +1,85 @@
+.employee_navbar{
+    position: fixed;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: black;
+    height: 70px;
+    text-align: center;
+    color: #F2CA99;
+    top: 0;
+    left: 0;
+}
+
+.employeepage_logo{
+    display: flex;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.navlinks{
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    height: 70px;
+    gap: 10px;
+}
+
+.links{
+    display: flex;
+    color: #F2CA99;
+    height: 70px;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    padding: 0px 5px;
+}
+.dropdown_container{
+    float: left;
+    overflow: hidden;
+    min-width: 100px;
+}
+
+.btn_drop{
+    background-color: black;
+    border: none;
+    height: 70px;
+    width: 100%;
+    color: #F2CA99;
+}
+
+.btn_drop img{
+    width: 30px;
+    height: 30px;
+
+}
+
+.btn_drop:hover{
+    background-color: #F2CA99;
+    color: black;
+}
+
+.links:hover{
+    background-color: #F2CA99;
+    color: black;
+}
+
+.drop_content{
+    display: none;
+    position: absolute;
+    padding: 10px;
+    background-color: black;
+    box-shadow: 0px 10px 15px  rgba(0, 0, 0, 0.2);
+    color: #F2CA99;
+    text-decoration: none;
+}
+
+.drop_content:hover{
+    background-color: #F2CA99;
+    color: black;
+}
+
+.dropdown_container:hover .drop_content{
+    display: block;
+}

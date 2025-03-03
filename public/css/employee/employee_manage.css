@@ -1,4 +1,4 @@
-.welcome-message {
+welcome-message {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
@@ -11,7 +11,7 @@ body{
 .container-fluid{
     margin-top: 7rem;
     padding: 25px;
-
+     
 }
 
 .container-fluid::before{
@@ -34,18 +34,6 @@ body{
     color: #F2CA99;
 }
 
-
-.action-button {
-    padding: 5px 10px;
-    background-color: #A6855D;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+h1{
+    color: #A6855D;
 }
-
-.action-button:hover {
-    background-color: #F2CA99;
-}
-
-

@@ -5,60 +5,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Appointments</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/employee/employee_manage.css">
+    <link rel="stylesheet" href="/css/employee/employee_navbar.css">
 </head>
 
 <body>
-    <h1>ยินดีต้อนรับ, <%= employee.FirstName %>
-    <%= employee.LastName %>!</h1>
-    <h2>จัดการนัดลูกค้า</h2>
-            <a href="/employee_logout">ออกจากระบบ</a>
-            <a href="/employee_homepage">รายการนัดลูกค้า</a>
-            <table>
-                <thead>
-                    <tr>
-                        <th>เลขที่</th>
-                        <th>ชื่อลูกค้า</th>
-                        <th>วันที่นัด</th>
-                        <th>ช่วงเวลา</th>
-                        <th>บริการ</th>
-                        <th>สถานะ</th>
-                        <th>การดำเนินการ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (appointments.length > 0) { %>
-                        <% appointments.forEach(appointment => { %>
+    <%- include('employee_navbar') %>
+    <div class="container-fluid">
+        <h1>go work nigga, <%= employee.FirstName %>
+            <%= employee.LastName %>!</h1>
+            <h2 class="my-4">จัดการนัดลูกค้า</h2>
+                    <table class="table table-hover table-border table-dark table-striped">
+                        <thead>
                             <tr>
-                                <td><%= appointment.AppointmentID %></td>
-                                <td><%= appointment.FirstName %> <%= appointment.LastName %></td>
-                                <td><%= appointment.AppointmentDate %></td>
-                                <td><%= appointment.TimeSlot %></td>
-                                <td><%= appointment.Service %></td>
-                                <td><%= appointment.Status %></td>
-                                <td>
-                                    <!-- ปุ่มเสร็จสิ้น -->
-                                    <form action="/employee_manage_appointment/complete/<%= appointment.AppointmentID %>"
-                                        method="POST" style="display: inline;" onsubmit="return confirmAction('เสร็จสิ้น')">
-                                        <button type="submit">เสร็จสิ้น</button>
-                                    </form>
-        
-                                    <!-- ปุ่มยกเลิก -->
-                                    <form action="/employee_manage_appointment/cancel/<%= appointment.AppointmentID %>"
-                                        method="POST" style="display: inline;" onsubmit="return confirmAction('ยกเลิก')">
-                                        <button type="submit">ยกเลิก</button>
-                                    </form>
-                                </td>
+                                <th>เลขที่</th>
+                                <th>ชื่อลูกค้า</th>
+                                <th>วันที่นัด</th>
+                                <th>ช่วงเวลา</th>
+                                <th>บริการ</th>
+                                <th>สถานะ</th>
+                                <th>การดำเนินการ</th>
                             </tr>
-                        <% }) %>
-                    <% } else { %>
-                        <tr>
-                            <td colspan="7" style="text-align: center;">ยังไม่มีนัด</td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
-
+                        </thead>
+                        <tbody>
+                            <% if (appointments.length > 0) { %>
+                                <% appointments.forEach(appointment => { %>
+                                    <tr>
+                                        <td><%= appointment.AppointmentID %></td>
+                                        <td><%= appointment.FirstName %> <%= appointment.LastName %></td>
+                                        <td><%= appointment.AppointmentDate %></td>
+                                        <td><%= appointment.TimeSlot %></td>
+                                        <td><%= appointment.Service %></td>
+                                        <td><%= appointment.Status %></td>
+                                        <td>
+                                            <!-- ปุ่มเสร็จสิ้น -->
+                                            <form action="/employee_manage_appointment/complete/<%= appointment.AppointmentID %>"
+                                                method="POST" style="display: inline;" onsubmit="return confirmAction('เสร็จสิ้น')">
+                                                <button type="submit" class="btn btn-danger">เสร็จสิ้น</button>
+                                            </form>
+                
+                                            <!-- ปุ่มยกเลิก -->
+                                            <form action="/employee_manage_appointment/cancel/<%= appointment.AppointmentID %>"
+                                                method="POST" style="display: inline;" onsubmit="return confirmAction('ยกเลิก')">
+                                                <button type="submit" class="btn btn-success">ยกเลิก</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="7" style="text-align: center;">ยังไม่มีนัด</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+        
+    </div>
+    
             <script>
                 // ฟังก์ชันแสดงการยืนยันก่อนดำเนินการ
                 function confirmAction(action) {

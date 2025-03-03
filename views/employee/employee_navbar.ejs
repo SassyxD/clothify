@@ -1,0 +1,19 @@
+<div class="employee_navbar">
+    <div class="employeepage_logo">
+        ClOTHIFY
+        ระบบพนักงาน
+    </div>
+    <div class="navlinks">
+        <a href="/employee_homepage" class="links">รายการนัดลูกค้า</a>
+        <a href="/employee_manage_appointment" class="links">จัดการนัด</a>
+        <div class="dropdown_container">
+            <button class="btn_drop">
+                <img src="/svg/users.svg" alt="">
+                <%= employee.FirstName %>
+            </button>
+            <a href="/employee_logout" class="drop_content">
+                ออกจากระบบ
+            </a>
+        </div>
+    </div>
+</div>
