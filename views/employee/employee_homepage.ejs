@@ -54,6 +54,7 @@
     </div>
 
     <a href="/employee_logout">ออกจากระบบ</a>
+    <a href="/employee_manage_appointment">จัดการนัด</a>
     <!-- ตารางรายการนัดลูกค้า -->
     <h2>รายการนัดลูกค้า</h2>
     <table>
@@ -69,36 +70,29 @@
             </tr>
         </thead>
         <tbody>
-            <% appointments.forEach((appointment)=> { %>
-                <tr>
-                    <td>
-                        <%= appointment.AppointmentID %>
-                    </td>
-                    <td>
-                        <%= appointment.AppointmentDate %>
-                    </td>
-                    <td>
-                        <%= appointment.TimeSlot %>
-                    </td>
-                    <td>
-                        <%= appointment.Service %>
-                    </td>
-                    <td>
-                        <%= appointment.Status %>
-                    </td>
-                    <td>
-                        <%= appointment.CustomerFirstName %>
-                            <%= appointment.CustomerLastName %>
-                    </td>
-                    <td>
-                        <% if (appointment.Status === 'รอการยืนยัน') { %>
-                            <form action="/employee/accept_appointment/<%= appointment.AppointmentID %>" method="POST" style="display: inline;" onsubmit="return confirmBooking()">
-                                <button type="submit" class="action-button">จองนัด</button>
-                            </form>
-                        <% } %>
-                    </td>
-                </tr>
+            <% if (appointments.length > 0) { %>
+                <% appointments.forEach((appointment) => { %>
+                    <tr>
+                        <td><%= appointment.AppointmentID %></td>
+                        <td><%= appointment.AppointmentDate %></td>
+                        <td><%= appointment.TimeSlot %></td>
+                        <td><%= appointment.Service %></td>
+                        <td><%= appointment.Status %></td>
+                        <td><%= appointment.CustomerFirstName %> <%= appointment.CustomerLastName %></td>
+                        <td>
+                            <% if (appointment.Status === 'รอการยืนยัน') { %>
+                                <form action="/employee/accept_appointment/<%= appointment.AppointmentID %>" method="POST" style="display: inline;" onsubmit="return confirmBooking()">
+                                    <button type="submit" class="action-button">จองนัด</button>
+                                </form>
+                            <% } %>
+                        </td>
+                    </tr>
                 <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="7" style="text-align: center; font-size: 24px;">ยังไม่มีนัด</td>
+                </tr>
+            <% } %>
         </tbody>
     </table>
     <script>

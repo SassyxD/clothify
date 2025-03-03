@@ -64,16 +64,16 @@ app.get('/admin_appointment', function (req, res) {
         LEFT JOIN Employee E ON A.EmployeeID = E.EmployeeID
         `;
 
-        // ดึงข้อมูลจากฐานข้อมูล
-        db.all(query, [], (err, rows) => {
-            if (err) {
-                console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', err.message);
-                return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูล');
-            }
+    // ดึงข้อมูลจากฐานข้อมูล
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', err.message);
+            return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูล');
+        }
 
-            // ส่งข้อมูลไปยัง EJS template
-            res.render('admin/admin_appointment', { appointments: rows });
-        });
+        // ส่งข้อมูลไปยัง EJS template
+        res.render('admin/admin_appointment', { appointments: rows });
+    });
 });
 //หน้าแอดมิน แสดงข้อมูลลูกค้า
 app.get('/admin_customer', function (req, res) {
@@ -308,21 +308,56 @@ app.get('/employee_homepage', function (req, res) {
                 Customer.LastName AS CustomerLastName
             FROM Appointment
             LEFT JOIN Customer ON Appointment.CustomerID = Customer.CustomerID
-            WHERE Appointment.EmployeeID = ? OR Appointment.EmployeeID IS NULL
+            WHERE (Appointment.EmployeeID = ? OR Appointment.EmployeeID IS NULL)
+                AND Appointment.Status = 'รอการยืนยัน'
         `;
 
         db.all(sql, [employeeID], (err, appointments) => {
             if (err) {
                 return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูลนัดลูกค้า');
             }
-            res.render('employee/employee_homepage', { 
-                employee: employee, 
-                appointments: appointments 
+            res.render('employee/employee_homepage', {
+                employee: employee,
+                appointments: appointments
             });
         });
     });
 });
+//หน้าจัดการนัด
+app.get('/employee_manage_appointment', (req, res) => {
+    const employeeId = req.session.employee_id;
+    const sql = `
+        SELECT 
+            Appointment.AppointmentID,
+            Appointment.AppointmentDate,
+            Appointment.TimeSlot,
+            Appointment.Service,
+            Appointment.Status,
+            Customer.FirstName,
+            Customer.LastName
+        FROM 
+            Appointment
+        INNER JOIN 
+            Customer ON Appointment.CustomerID = Customer.CustomerID
+        WHERE 
+            Appointment.EmployeeID = ? AND Appointment.Status = 'จอง'
+    `;
+    db.get('SELECT FirstName, LastName FROM Employee WHERE EmployeeID = ?', [employeeId], (err, employee) => {
+        if (err || !employee) {
+            return res.status(500).send('เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน');
+        }
+        db.all(sql, [employeeId], (err, appointments) => {
+            if (err) {
+                console.error('Error fetching appointments:', err.message);
+                res.status(500).send('Internal Server Error');
+            } else {
+                res.render('employee/employee_manage_appointment', { appointments, employee });
+            }
+        });
+    });
+});
 // ---------------------- EMPLOYEE action----------------------
+//พนักงานกด log in
 app.post('/employee_login_action', (req, res) => {
     const { username, password } = req.body;
 
@@ -367,6 +402,33 @@ app.post('/employee/accept_appointment/:id', function (req, res) {
             return res.status(400).send('ไม่สามารถจองนัดนี้ได้');
         }
         res.redirect('/employee_homepage');
+    });
+});
+// พนักงานกดเสร็จนัดหรือยกเลิกนัด
+app.post('/employee_manage_appointment/:action/:id', (req, res) => {
+    const { action, id } = req.params;
+    const employeeId = req.session.employee_id;
+    let newStatus;
+
+    switch (action) {
+        case 'cancel':
+            newStatus = 'ยกเลิก';
+            break;
+        case 'complete':
+            newStatus = 'เสร็จสิ้น';
+            break;
+        default:
+            return res.status(400).send('Invalid action');
+    }
+
+    const sql = `UPDATE Appointment SET Status = ? WHERE AppointmentID = ? AND EmployeeID = ?`;
+    db.run(sql, [newStatus, id, employeeId], (err) => {
+        if (err) {
+            console.error('Error updating appointment status:', err.message);
+            res.status(500).send('Internal Server Error');
+        } else {
+            res.redirect('/employee_manage_appointment');
+        }
     });
 });
 app.listen(port, () => {
