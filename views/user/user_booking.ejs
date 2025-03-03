@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,10 @@
     <style>
         body {
             background-color: #121212;
-            color: #fff;
+            color: #F2CA99;
             font-family: Arial, sans-serif;
         }
+
         .container {
             max-width: 600px;
             background: #1e1e1e;
@@ -18,17 +20,49 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
+
         .btn-custom {
-            background-color: #d4a373;
+            background-color: #A6855D;
             border: none;
+            color: black;
+        }
+
+        .btn-custom:hover {
+            background-color: #F2CA99;
+            color: black;
+        }
+        /*NavBar*/
+        .navbar-custom {
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #333;
+        }
+        .navbar-custom .nav-link {
             color: #fff;
         }
-        .btn-custom:hover {
-            background-color: #b8865b;
+        .navbar-custom .nav-link:hover {
+            color: #d4a373;
         }
     </style>
 </head>
+
 <body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user_log_out">ออกจากระบบ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user_history">ประวัติการนัด</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user_homepage">หน้าหลัก</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container mt-5">
         <h2 class="text-center">Booking</h2>
         <form action="/user_review" method="POST">
@@ -47,23 +81,28 @@
             <p>เลือกเวลา</p>
             <div class="mb-3">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="time1" value="9.00 - 10.00" required>
+                    <input class="form-check-input" type="radio" name="gridRadios" id="time1" value="9.00 - 10.00"
+                        required>
                     <label class="form-check-label" for="time1">9.00 - 10.00</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="time2" value="10.00 - 11.00" required>
+                    <input class="form-check-input" type="radio" name="gridRadios" id="time2" value="10.00 - 11.00"
+                        required>
                     <label class="form-check-label" for="time2">10.00 - 11.00</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="time3" value="13.00 - 14.00" required>
+                    <input class="form-check-input" type="radio" name="gridRadios" id="time3" value="13.00 - 14.00"
+                        required>
                     <label class="form-check-label" for="time3">13.00 - 14.00</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="time4" value="15.00 - 16.00" required>
+                    <input class="form-check-input" type="radio" name="gridRadios" id="time4" value="15.00 - 16.00"
+                        required>
                     <label class="form-check-label" for="time4">15.00 - 16.00</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="time5" value="17.00 - 18.00" required>
+                    <input class="form-check-input" type="radio" name="gridRadios" id="time5" value="17.00 - 18.00"
+                        required>
                     <label class="form-check-label" for="time5">17.00 - 18.00</label>
                 </div>
             </div>
@@ -77,4 +116,5 @@
         });
     </script>
 </body>
+
 </html>
