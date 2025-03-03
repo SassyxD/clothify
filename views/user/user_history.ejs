@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ประวัติการนัดหมาย</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/user/nav_login.css">
 </head>
 
 <body>
-    <a href="/user_log_out">ออกจากระบบ</a>
-    <a href="/user_history">ประวัติการนัด</a>
-    <a href="/user_homepage">ย้อนกลับ</a>
+    <%- include('navbar_login') %>
     <h1>ประวัติการนัดหมาย</h1>
-    <table>
+    <table class="table" style="margin-top: 8rem;">
         <thead>
             <tr>
                 <th>ID</th>

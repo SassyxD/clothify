@@ -242,7 +242,7 @@ app.get('/user_history', (req, res) => {
                     return res.status(401).send('Invalid credentials');
                 }
                 console.log("Go to user_homepage User ID:", req.session.user_id);
-                res.render('user/user_history',{appointments, Username: row.Username });
+                res.render('user/user_history',{appointments, username: row.Username });
             });
         }
     });
