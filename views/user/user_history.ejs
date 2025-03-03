@@ -25,29 +25,45 @@
             </tr>
         </thead>
         <tbody>
-            <% appointments.forEach(appointment => { %>
-                <tr>
-                    <td><%= appointment.AppointmentID %></td>
-                    <td><%= appointment.AppointmentDate %></td>
-                    <td><%= appointment.TimeSlot %></td>
-                    <td><%= appointment.Service %></td>
-                    <td>
-                        <% if (appointment.Status === 'จอง') { %>
-                            พนักงานรับนัด
-                        <% } else { %>
-                            <%= appointment.Status %>
-                        <% } %>
-                    </td>
-                    
-                    <td>
-                        <% if (appointment.Status === 'รอการยืนยัน' || appointment.Status === 'จอง') { %>
-                            <form action="/user_history/cancel/<%= appointment.AppointmentID %>" method="POST" style="display: inline;" onsubmit="return confirm('คุณแน่ใจหรือไม่ที่จะยกเลิกนัดหมายนี้?')">
-                                <button type="submit">ยกเลิก</button>
-                            </form>
-                        <% } %>
-                    </td>
-                </tr>
-            <% }) %>
+            <% if (appointments.length> 0) { %>
+                <% appointments.forEach(appointment=> { %>
+                    <tr>
+                        <td>
+                            <%= appointment.AppointmentID %>
+                        </td>
+                        <td>
+                            <%= appointment.AppointmentDate %>
+                        </td>
+                        <td>
+                            <%= appointment.TimeSlot %>
+                        </td>
+                        <td>
+                            <%= appointment.Service %>
+                        </td>
+                        <td>
+                            <% if (appointment.Status==='จอง' ) { %>
+                                พนักงานรับนัด
+                                <% } else { %>
+                                    <%= appointment.Status %>
+                                        <% } %>
+                        </td>
+
+                        <td>
+                            <% if (appointment.Status==='รอการยืนยัน' || appointment.Status==='จอง' ) { %>
+                                <form action="/user_history/cancel/<%= appointment.AppointmentID %>" method="POST"
+                                    style="display: inline;"
+                                    onsubmit="return confirm('คุณแน่ใจหรือไม่ที่จะยกเลิกนัดหมายนี้?')">
+                                    <button type="submit">ยกเลิก</button>
+                                </form>
+                                <% } %>
+                        </td>
+                    </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="7" style="text-align: center;">ยังไม่มีนัด</td>
+                    </tr>
+                <% } %>
         </tbody>
     </table>
 </body>

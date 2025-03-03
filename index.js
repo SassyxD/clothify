@@ -178,26 +178,44 @@ app.get('/user_register', function (req, res) {
 });
 //หน้าuserhomepage
 app.get('/user_homepage', function (req, res) {
-    db.get('SELECT FirstName FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+    db.get('SELECT * FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
         if (err || !row) {
             return res.status(401).send('Invalid credentials');
         }
         console.log("Go to user_homepage User ID:", req.session.user_id);
-        res.render('user/user_homepage', { firstname: row.FirstName });
+        res.render('user/user_homepage', { username: row.Username,firstname: row.FirstName });
     });
 });
 
 //หน้าลูกค้าแสดงตัดสูทใหม่
 app.get('/user_new_suit', (req, res) => {
-    res.render("user/user_new_suit");
+    db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+        if (err || !row) {
+            return res.status(401).send('Invalid credentials');
+        }
+        console.log("Go to user_homepage User ID:", req.session.user_id);
+        res.render('user/user_new_suit',{ username: row.Username });
+    });
 });
 //หน้าลูกค้าแสดงรายละเอียดแก้ไข/ปรับแต่งสูท
 app.get('/user_fix_suit', (req, res) => {
-    res.render("user/user_fix_suit");
+    db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+        if (err || !row) {
+            return res.status(401).send('Invalid credentials');
+        }
+        console.log("Go to user_homepage User ID:", req.session.user_id);
+        res.render('user/user_fix_suit',{ username: row.Username });
+    });
 });
 //หน้าจอง
 app.get('/user_booking', function (req, res) {
-    res.render('user/user_booking',);
+    db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+        if (err || !row) {
+            return res.status(401).send('Invalid credentials');
+        }
+        console.log("Go to user_homepage User ID:", req.session.user_id);
+        res.render('user/user_booking',{ username: row.Username });
+    });
 });
 // Route to display customer appointments
 app.get('/user_history', (req, res) => {
@@ -219,7 +237,13 @@ app.get('/user_history', (req, res) => {
             console.error('Error fetching appointments:', err.message);
             res.status(500).send('Internal Server Error');
         } else {
-            res.render('user/user_history', { appointments });
+            db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+                if (err || !row) {
+                    return res.status(401).send('Invalid credentials');
+                }
+                console.log("Go to user_homepage User ID:", req.session.user_id);
+                res.render('user/user_history',{appointments, Username: row.Username });
+            });
         }
     });
 });
@@ -303,10 +327,16 @@ app.get('/user_log_out', (req, res) => {
         res.sendFile(path.join(__dirname, '/public/user/landingpage.html'));
     });
 });
-// Route to handle form submission and display review page
+// ลูกค้าดูรายละเอียดยืนยัน
 app.post('/user_review', (req, res) => {
     const { date, service, gridRadios: time } = req.body;
-    res.render('user/user_review', { date, service, time });
+    db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+        if (err || !row) {
+            return res.status(401).send('Invalid credentials');
+        }
+        console.log("Go to user_homepage User ID:", req.session.user_id);
+        res.render('user/user_review',{date, service, time , username: row.Username });
+    });
 });
 
 app.post('/generate-qr', (req, res) => {
@@ -318,12 +348,18 @@ app.post('/generate-qr', (req, res) => {
             console.error('Error generating QR code:', err);
             res.status(500).send('Error generating QR code');
         } else {
-            res.render('user/user_generate_qr', { qrCode: url, date, service, time });
+            db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+                if (err || !row) {
+                    return res.status(401).send('Invalid credentials');
+                }
+                console.log("Go to user_homepage User ID:", req.session.user_id);
+                res.render('user/user_generate_qr',{qrCode: url, date, service, time , username: row.Username });
+            });
         }
     });
 });
 
-// Route to handle payment success
+// หน้าขอบคุณ
 app.post('/payment-success', (req, res) => {
     const { date, service, time } = req.body; // รับค่าจาก req.body
 
@@ -349,8 +385,14 @@ app.post('/payment-success', (req, res) => {
             console.error('Error saving appointment:', err.message);
             return res.status(500).send('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
         } else {
-            console.log(`Appointment saved with ID: ${this.lastID}`);
-            res.render('user/user_payment_success');
+            db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+                if (err || !row) {
+                    return res.status(401).send('Invalid credentials');
+                }
+                console.log("Go to user_homepage User ID:", req.session.user_id);
+                console.log(`Appointment saved with ID: ${this.lastID}`);
+                res.render('user/user_payment_success',{username: row.Username });
+            });
         }
     });
 });
