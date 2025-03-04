@@ -82,7 +82,8 @@
                                     <%= appointment.AppointmentID %>
                                 </td>
                                 <td>
-                                    <%= appointment.AppointmentDate %>
+                                    <%= new Date(appointment.AppointmentDate).toLocaleDateString('th-TH', {
+                                        day: 'numeric' , month: 'long' , year: 'numeric' }) %>
                                 </td>
                                 <td>
                                     <%= appointment.TimeSlot %>

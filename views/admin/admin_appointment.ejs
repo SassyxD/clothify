@@ -58,7 +58,8 @@
                                 <%= appointment.employeeName || 'ยังไม่มีพนักงานรับผิดชอบ' %>
                             </td>
                             <td>
-                                <%= appointment.date %>
+                                <%= new Date(appointment.date).toLocaleDateString('th-TH', { day: 'numeric' ,
+                                    month: 'long' , year: 'numeric' }) %>
                             </td>
                             <td>
                                 <%= appointment.timeSlot %>

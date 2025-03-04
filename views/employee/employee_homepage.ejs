@@ -39,7 +39,7 @@
                     <% appointments.forEach((appointment) => { %>
                         <tr>
                             <td><%= appointment.AppointmentID %></td>
-                            <td><%= appointment.AppointmentDate %></td>
+                            <td><%= new Date(appointment.AppointmentDate).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
                             <td><%= appointment.TimeSlot %></td>
                             <td><%= appointment.Service %></td>
                             <td><%= appointment.Status %></td>
