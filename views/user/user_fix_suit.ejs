@@ -3,24 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fix Suit</title>
+    <link rel="stylesheet" href="/css/user/nav_login.css">
+    <link rel="stylesheet" href="/css/user/fix_suit.css">
 </head>
 <body>
-    <%- include('navbar_login') %>
-    <a href="/user_log_out">ออกจากระบบ</a>
-    <a href="/user_history">ประวัติการนัด</a>
-    <h1>แก้ไข/ปรับแต่งสูท</h1>
-    <p>แก้ขนาดรอบตัว: ปรับให้พอดีกับรูปร่าง
-
-        แก้ความยาว: แขนเสื้อ / ตัวเสื้อ / ขากางเกง
-        
-        เปลี่ยนซับใน กระดุม หรือดีไซน์บางส่วน
-        
-        ซ่อมแซมรอยขาด หรือเปลี่ยนเนื้อผ้าบางส่วน
-        
-        ระยะเวลาการแก้ไข: 3-7 วัน
-        </p>
-    <a href="/user_homepage">ย้อนกลับ</a>
-    <a href="/user_booking">จองคิว</a>
+    <%- include('navbar_login') %>    
+    <div class="container">
+        <h1>แก้ไข/ปรับแต่งสูท</h1>
+        <p>แก้ขนาดรอบตัว: ปรับให้พอดีกับรูปร่าง
+        <p>แก้ความยาว: แขนเสื้อ / ตัวเสื้อ / ขากางเกง</p>
+        <p>เปลี่ยนซับใน กระดุม หรือดีไซน์บางส่วน</p>
+        <p>ซ่อมแซมรอยขาด หรือเปลี่ยนเนื้อผ้าบางส่วน</p>
+        <p>ระยะเวลาการแก้ไข: 3-7 วัน</p>
+        <p>เหมาะสำหรับ</p>
+        <ul>
+            <li>ลูกค้าที่มีสูทอยู่แล้วแต่ต้องการปรับแก้ให้พอดี</li>
+            <li>สูทตัวเก่าที่ต้องการซ่อมแซมหรือปรับทรงให้ดูทันสมัย</li>
+        </ul>
+        <div class="log">
+            <a href="/user_homepage" class="back-button">ย้อนกลับ</a>
+            <a href="/user_booking" class="success-button">จองคิวเลย</a>
+        </div>
+    </div>
+    <div class="container1"></div>
 </body>
 </html>
