@@ -42,13 +42,13 @@
                                             <!-- ปุ่มเสร็จสิ้น -->
                                             <form action="/employee_manage_appointment/complete/<%= appointment.AppointmentID %>"
                                                 method="POST" style="display: inline;" onsubmit="return confirmAction('เสร็จสิ้น')">
-                                                <button type="submit" class="btn btn-danger">เสร็จสิ้น</button>
+                                                <button type="submit" class="btn btn-success">เสร็จสิ้น</button>
                                             </form>
                 
                                             <!-- ปุ่มยกเลิก -->
                                             <form action="/employee_manage_appointment/cancel/<%= appointment.AppointmentID %>"
                                                 method="POST" style="display: inline;" onsubmit="return confirmAction('ยกเลิก')">
-                                                <button type="submit" class="btn btn-success">ยกเลิก</button>
+                                                <button type="submit" class="btn btn-danger">ยกเลิก</button>
                                             </form>
                                         </td>
                                     </tr>
