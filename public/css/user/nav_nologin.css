@@ -79,4 +79,5 @@
 
 .dropdown_container:hover .drop_content {
     display: block;
+    background-color: #F2CA99;
   }
