@@ -57,7 +57,21 @@
                         <td><%= appointment.AppointmentDate %></td>
                         <td><%= appointment.TimeSlot %></td>
                         <td><%= appointment.Service %></td>
-                        <td><%= appointment.Status %></td>
+                        <td>
+                            <span class="badge fs-6 
+                                <% if (appointment.Status === 'รอการยืนยัน') { %> bg-warning text-dark
+                                <% } else if (appointment.Status === 'จอง') { %> bg-primary
+                                <% } else if (appointment.Status === 'ยกเลิก') { %> bg-danger 
+                                <% } else if (appointment.Status === 'เสร็จสิ้น') { %> bg-success
+                                <% } else { %> bg-secondary
+                                <% } %>">
+                                <% if (appointment.Status === 'จอง') { %>
+                                    พนักงานรับนัด
+                                <% } else { %>
+                                    <%= appointment.Status %>
+                                <% } %>
+                            </span>
+                        </td>
                         <td>
                             <% if (appointment.EmployeeFirstName && appointment.EmployeeLastName) { %>
                                 <%= appointment.EmployeeFirstName %> <%= appointment.EmployeeLastName %>
