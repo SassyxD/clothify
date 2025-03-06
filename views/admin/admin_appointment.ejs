@@ -8,28 +8,28 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/admin/nav_admin.css">
     <style>
-
-        .container-fluid{
+        .container-fluid {
             margin-top: 8rem;
             padding-right: 20px;
             padding-left: 20px;
         }
 
-        .container-fluid::before{
+        .container-fluid::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('/image/blacksuit_bg.png'); 
-            background-size: cover; 
+            background-image: url('/image/blacksuit_bg.png');
+            background-size: cover;
             background-position: center;
             filter: brightness(30%);
             z-index: -1;
             height: 100%;
             background-attachment: fixed;
         }
+        
     </style>
 </head>
 
@@ -50,32 +50,52 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% appointments.forEach((appointment)=> { %>
-                        <tr>
-                            <td>
-                                <%= appointment.id %>
-                            </td>
-                            <td>
-                                <%= appointment.customerName %>
-                            </td>
-                            <td>
-                                <%= appointment.status %>
-                            </td>
-                            <td>
-                                <%= appointment.employeeName || 'ยังไม่มีพนักงานรับผิดชอบ' %>
-                            </td>
-                            <td>
-                                <%= new Date(appointment.date).toLocaleDateString('th-TH', { day: 'numeric' ,
-                                    month: 'long' , year: 'numeric' }) %>
-                            </td>
-                            <td>
-                                <%= appointment.timeSlot %>
-                            </td>
-                            <td>
-                                <%= appointment.service %>
-                            </td>
-                        </tr>
-                        <% }) %>
+                    
+                    <% if (appointments.length> 0) { %>
+                        <% appointments.forEach((appointment)=> { %>
+                            <tr>
+                                <td>
+                                    <%= appointment.id %>
+                                </td>
+                                <td>
+                                    <%= appointment.customerName %>
+                                </td>
+                                <td>
+                                    <span class="badge fs-6 
+                                        <% if (appointment.status === 'รอการยืนยัน') { %> bg-warning text-dark
+                                        <% } else if (appointment.status === 'จอง') { %> bg-primary
+                                        <% } else if (appointment.status === 'ยกเลิก') { %> bg-danger 
+                                        <% } else if (appointment.status === 'เสร็จสิ้น') { %> bg-success
+                                        <% } else { %> bg-secondary
+                                        <% } %>">
+                                        <% if (appointment.status === 'จอง') { %>
+                                            พนักงานรับนัด
+                                        <% } else { %>
+                                            <%= appointment.status %>
+                                        <% } %>
+                                    </span>
+                                </td>
+                                
+                                <td>
+                                    <%= appointment.employeeName || 'ยังไม่มีพนักงานรับผิดชอบ' %>
+                                </td>
+                                <td>
+                                    <%= new Date(appointment.date).toLocaleDateString('th-TH', { day: 'numeric' ,
+                                        month: 'long' , year: 'numeric' }) %>
+                                </td>
+                                <td>
+                                    <%= appointment.timeSlot %>
+                                </td>
+                                <td>
+                                    <%= appointment.service %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="7" class="no-appointments">ยังไม่มีนัด</td>
+                            </tr>
+                            <% } %>
                 </tbody>
             </table>
         </div>
