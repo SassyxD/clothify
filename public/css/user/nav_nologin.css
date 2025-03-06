@@ -58,6 +58,7 @@
     background-color: #A6855D;
     display: flex;
     height: 70px;
+    padding: 10px;
     transition: background-color .3s ease-in-out;
 }
 
