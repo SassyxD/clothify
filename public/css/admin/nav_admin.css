@@ -35,10 +35,12 @@
     padding: 5px;
     height: 70px;
     align-items: center;
+    transition: background-color .3s ease-in-out;
 }
 
 .nav:hover{
     background-color: #F2CA99;
     color: black;
+    transition: background-color .3s ease-in-out;
 }
 
