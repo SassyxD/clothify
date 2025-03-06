@@ -48,29 +48,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% customers.forEach((customer)=> { %>
-                        <tr>
-                            <td>
-                                <%= customer.CustomerID %>
-                            </td>
-                            <td>
-                                <%= customer.FirstName %>
-                            </td>
-                            <td>
-                                <%= customer.LastName %>
-                            </td>
-                            <td>
-                                <%= customer.PhoneNumber %>
-                            </td>
-                            <td>
-                                <%= customer.Email %>
-                            </td>
-                            <td>
-                                <!-- ปุ่มดูประวัติการนัด -->
-                                <a href="/admin/customer_appointments/<%= customer.CustomerID %>" class="btn btn-info btn-sm">ดูประวัติการนัด</a>
-                            </td>
-                        </tr>
-                        <% }); %>
+                    <% if (customers.length> 0) { %>
+                        <% customers.forEach((customer)=> { %>
+                            <tr>
+                                <td>
+                                    <%= customer.CustomerID %>
+                                </td>
+                                <td>
+                                    <%= customer.FirstName %>
+                                </td>
+                                <td>
+                                    <%= customer.LastName %>
+                                </td>
+                                <td>
+                                    <%= customer.PhoneNumber %>
+                                </td>
+                                <td>
+                                    <%= customer.Email %>
+                                </td>
+                                <td>
+                                    <!-- ปุ่มดูประวัติการนัด -->
+                                    <a href="/admin/customer_appointments/<%= customer.CustomerID %>" class="btn btn-info btn-sm">ดูประวัติการนัด</a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="6" style="text-align: center; font-size: 24px;">ยังไม่มีข้อมูล</td>
+                            </tr>
+                            <% } %>
                 </tbody>
             </table>
         </div>

@@ -51,36 +51,42 @@
                 </tr>
             </thead>
             <tbody>
-                <% appointments.forEach((appointment)=> { %>
-                    <tr>
-                        <td><%= appointment.AppointmentID %></td>
-                        <td><%= appointment.AppointmentDate %></td>
-                        <td><%= appointment.TimeSlot %></td>
-                        <td><%= appointment.Service %></td>
-                        <td>
-                            <span class="badge fs-6 
-                                <% if (appointment.Status === 'รอการยืนยัน') { %> bg-warning text-dark
-                                <% } else if (appointment.Status === 'จอง') { %> bg-primary
-                                <% } else if (appointment.Status === 'ยกเลิก') { %> bg-danger 
-                                <% } else if (appointment.Status === 'เสร็จสิ้น') { %> bg-success
-                                <% } else { %> bg-secondary
-                                <% } %>">
-                                <% if (appointment.Status === 'จอง') { %>
-                                    พนักงานรับนัด
+                <% if (appointments.length> 0) { %>
+                    <% appointments.forEach((appointment)=> { %>
+                        <tr>
+                            <td><%= appointment.AppointmentID %></td>
+                            <td><%= appointment.AppointmentDate %></td>
+                            <td><%= appointment.TimeSlot %></td>
+                            <td><%= appointment.Service %></td>
+                            <td>
+                                <span class="badge fs-6 
+                                    <% if (appointment.Status === 'รอการยืนยัน') { %> bg-warning text-dark
+                                    <% } else if (appointment.Status === 'จอง') { %> bg-primary
+                                    <% } else if (appointment.Status === 'ยกเลิก') { %> bg-danger 
+                                    <% } else if (appointment.Status === 'เสร็จสิ้น') { %> bg-success
+                                    <% } else { %> bg-secondary
+                                    <% } %>">
+                                    <% if (appointment.Status === 'จอง') { %>
+                                        พนักงานรับนัด
+                                    <% } else { %>
+                                        <%= appointment.Status %>
+                                    <% } %>
+                                </span>
+                            </td>
+                            <td>
+                                <% if (appointment.EmployeeFirstName && appointment.EmployeeLastName) { %>
+                                    <%= appointment.EmployeeFirstName %> <%= appointment.EmployeeLastName %>
                                 <% } else { %>
-                                    <%= appointment.Status %>
+                                    ยังไม่มีพนักงานรับผิดชอบ
                                 <% } %>
-                            </span>
-                        </td>
-                        <td>
-                            <% if (appointment.EmployeeFirstName && appointment.EmployeeLastName) { %>
-                                <%= appointment.EmployeeFirstName %> <%= appointment.EmployeeLastName %>
-                            <% } else { %>
-                                ยังไม่มีพนักงานรับผิดชอบ
-                            <% } %>
-                        </td>
-                    </tr>
-                <% }); %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="6" style="text-align: center; font-size: 24px;">ยังไม่มีนัด</td>
+                        </tr>
+                        <% } %>
             </tbody>
         </table>
     </div>
