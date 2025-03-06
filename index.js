@@ -247,6 +247,25 @@ app.get('/user_booking', function (req, res) {
         res.render('user/user_booking', { username: row.Username });
     });
 });
+//ตรวจการจองซ้ำ
+app.post('/check_booking', express.json(), (req, res) => {
+    const { date, timeSlot } = req.body;
+
+    // ตรวจสอบว่ามีการจองในวันที่และช่วงเวลานี้แล้วหรือไม่
+    const checkSql = `
+        SELECT * FROM Appointment
+        WHERE AppointmentDate = ? AND TimeSlot = ? AND Status != 'ยกเลิก'
+    `;
+    db.get(checkSql, [date, timeSlot], (err, row) => {
+        if (err) {
+            console.error('Error checking appointment:', err.message);
+            return res.status(500).json({ isBooked: false });
+        }
+
+        // ส่งผลลัพธ์กลับไปยังไคลเอนต์
+        res.json({ isBooked: !!row });
+    });
+});
 // Route to display customer appointments
 app.get('/user_history', (req, res) => {
     const customerId = req.session.user_id;
