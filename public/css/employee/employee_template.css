@@ -1,0 +1,26 @@
+.container-fluid{
+    margin-top: 7rem;
+    padding: 30px;
+    height: 100vh;
+
+}
+
+h1{
+    color: #F2CA99;
+}
+
+
+.container-fluid::before{
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-image: url('/image/blacksuit_bg.png'); 
+    background-size: cover; 
+    background-position: center;
+    filter: brightness(30%);
+    z-index: -1;
+    background-attachment: fixed;
+}
