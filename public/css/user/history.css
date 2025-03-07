@@ -1,0 +1,20 @@
+h1 {
+    color: #F2CA99;
+    font-size: 60px;
+    margin-bottom: 2rem;
+}
+
+.container-fluid{
+    margin-top: 5rem;
+    padding: 30px;
+}
+
+body{
+    background-color: black;
+}
+
+.no-appointments {
+    text-align: center;
+    font-style: italic;
+    color: #6c757d;
+}
