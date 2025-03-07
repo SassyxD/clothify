@@ -30,7 +30,7 @@ function isAuthenticated(req, res, next) {
     if (req.session.user_id) {
         next();
     } else {
-        res.status(401).send('Unauthorized');
+        res.redirect("/user_login?success=pleaselogin")
     }
 }
 // Connect to SQLite database
@@ -207,7 +207,7 @@ app.get('/user_register', function (req, res) {
     res.render('user/user_register', { error: error });
 });
 //หน้าuserhomepage
-app.get('/user_homepage', function (req, res) {
+app.get('/user_homepage',isAuthenticated , function (req, res) {
     db.get('SELECT * FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
         if (err || !row) {
             return res.status(401).send('Invalid credentials');
@@ -218,7 +218,7 @@ app.get('/user_homepage', function (req, res) {
 });
 
 //หน้าลูกค้าแสดงตัดสูทใหม่
-app.get('/user_new_suit', (req, res) => {
+app.get('/user_new_suit',isAuthenticated , (req, res) => {
     db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
         if (err || !row) {
             return res.status(401).send('Invalid credentials');
@@ -228,7 +228,7 @@ app.get('/user_new_suit', (req, res) => {
     });
 });
 //หน้าลูกค้าแสดงรายละเอียดแก้ไข/ปรับแต่งสูท
-app.get('/user_fix_suit', (req, res) => {
+app.get('/user_fix_suit',isAuthenticated , (req, res) => {
     db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
         if (err || !row) {
             return res.status(401).send('Invalid credentials');
@@ -238,7 +238,7 @@ app.get('/user_fix_suit', (req, res) => {
     });
 });
 //หน้าจอง
-app.get('/user_booking', function (req, res) {
+app.get('/user_booking',isAuthenticated , function (req, res) {
     db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
         if (err || !row) {
             return res.status(401).send('Invalid credentials');
@@ -267,7 +267,7 @@ app.post('/check_booking', express.json(), (req, res) => {
     });
 });
 // Route to display customer appointments
-app.get('/user_history', (req, res) => {
+app.get('/user_history',isAuthenticated , (req, res) => {
     const customerId = req.session.user_id;
     const sql = `
         SELECT 
@@ -297,7 +297,7 @@ app.get('/user_history', (req, res) => {
     });
 });
 //ลูกค้ากดยกเลิก
-app.post('/user_history/cancel/:id', (req, res) => {
+app.post('/user_history/cancel/:id',isAuthenticated , (req, res) => {
     const appointmentId = req.params.id;
     const customerId = req.session.user_id;
 
@@ -377,7 +377,7 @@ app.get('/user_log_out', (req, res) => {
     });
 });
 // ลูกค้าดูรายละเอียดยืนยัน
-app.post('/user_review', (req, res) => {
+app.post('/user_review',isAuthenticated , (req, res) => {
     const { date, service, gridRadios: time } = req.body;
     db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
         if (err || !row) {
@@ -388,7 +388,7 @@ app.post('/user_review', (req, res) => {
     });
 });
 
-app.post('/generate-qr', (req, res) => {
+app.post('/generate-qr',isAuthenticated , (req, res) => {
     const { date, service, time } = req.body; // รับค่าจาก req.body
     const paymentData = '00020101021129370016A000000677010111011300660000000005802TH530376463048956'; // PromptPay payload
 
@@ -409,7 +409,7 @@ app.post('/generate-qr', (req, res) => {
 });
 
 // หน้าขอบคุณ
-app.post('/payment-success', (req, res) => {
+app.post('/payment-success',isAuthenticated , (req, res) => {
     const { date, service, time } = req.body; // รับค่าจาก req.body
 
     // ตรวจสอบข้อมูล
