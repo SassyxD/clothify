@@ -5,12 +5,12 @@ const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const session = require('express-session');
 const qrcode = require('qrcode');
-// ยยย
-// create directory 'public'
+
+// ตั้งค่า Static file
 app.use(express.static('public'));
 app.use(express.static('images'));
 
-// Set EJS as templating engine
+// ตั้งค่า EJS 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
