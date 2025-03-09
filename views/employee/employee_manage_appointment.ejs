@@ -38,7 +38,9 @@
                                         <td><%= new Date(appointment.AppointmentDate).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
                                         <td><%= appointment.TimeSlot %></td>
                                         <td><%= appointment.Service %></td>
-                                        <td><%= appointment.Status %></td>
+                                        <td><% if (appointment.Status==='จอง' ) { %>
+                                            <span class="badge bg-primary fs-6 ">รับนัด</span>
+                                                <% } %></td>
                                         <td>
                                             <!-- ปุ่มเสร็จสิ้น -->
                                             <form action="/employee_manage_appointment/complete/<%= appointment.AppointmentID %>"

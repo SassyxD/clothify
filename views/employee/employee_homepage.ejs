@@ -43,7 +43,7 @@
                             <td><%= new Date(appointment.AppointmentDate).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' }) %></td>
                             <td><%= appointment.TimeSlot %></td>
                             <td><%= appointment.Service %></td>
-                            <td><%= appointment.Status %></td>
+                            <td ><span class="badge bg-warning text-dark fs-6 "><%= appointment.Status %></span></td>
                             <td><%= appointment.CustomerFirstName %> <%= appointment.CustomerLastName %></td>
                             <td>
                                 <% if (appointment.Status === 'รอการยืนยัน') { %>
