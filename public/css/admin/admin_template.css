@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai+Looped:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 .container-fluid {
     margin-top: 8rem;
     padding-right: 20px;
@@ -17,4 +18,10 @@
     background-position: center;
     filter: brightness(30%);
     z-index: -1;
+}
+
+body{
+    font-family: "Noto Sans Thai Looped", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
