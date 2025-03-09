@@ -62,9 +62,9 @@
             <div class="mb-3">
                 <label for="service" class="form-label">บริการ</label>
                 <select class="form-select" name="service" required>
-                    <option selected disabled>เลือกบริการ</option>
-                    <option>ตัดสูทใหม่</option>
-                    <option>แก้ไขปรับแต่งสูท</option>
+                    <option value="" selected disabled>เลือกบริการ</option>
+                    <option value="new_suit">ตัดสูทใหม่</option>
+                    <option value="alter_suit">แก้ไขปรับแต่งสูท</option>
                 </select>
             </div>
             <p>เลือกเวลา</p>
@@ -103,7 +103,6 @@
             const datePicker = document.getElementById('datePicker');
             const timeSlots = document.querySelectorAll('input[name="gridRadios"]');
 
-            // ฟังก์ชันตรวจสอบการจองซ้ำ
             const checkBooking = async (date, timeSlot) => {
                 try {
                     const response = await fetch('/check_booking', {
@@ -114,14 +113,13 @@
                         body: JSON.stringify({ date, timeSlot }),
                     });
                     const data = await response.json();
-                    return data.isBooked; // true = มีการจองแล้ว, false = สามารถจองได้
+                    return data.isBooked;
                 } catch (error) {
                     console.error('Error checking booking:', error);
                     return false;
                 }
             };
 
-            // ฟังก์ชันตรวจสอบเมื่อผู้ใช้เลือกวันที่และเวลา
             const validateBooking = async () => {
                 const date = datePicker.value;
                 const timeSlot = Array.from(timeSlots).find(radio => radio.checked)?.value;
@@ -138,11 +136,9 @@
                 }
             };
 
-            // ตรวจสอบเมื่อผู้ใช้เลือกวันที่หรือเวลา
             datePicker.addEventListener('change', validateBooking);
             timeSlots.forEach(radio => radio.addEventListener('change', validateBooking));
         });
     </script>
 </body>
-
 </html>

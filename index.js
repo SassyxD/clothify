@@ -262,11 +262,10 @@ app.post('/check_booking', express.json(), (req, res) => {
             return res.status(500).json({ isBooked: false });
         }
 
-        // ส่งผลลัพธ์กลับไปยังไคลเอนต์
         res.json({ isBooked: !!row });
     });
 });
-// Route to display customer appointments
+//หน้าปรระวัติการนักของลูกค้า
 app.get('/user_history',isAuthenticated , (req, res) => {
     const customerId = req.session.user_id;
     const sql = `
@@ -288,7 +287,7 @@ app.get('/user_history',isAuthenticated , (req, res) => {
         } else {
             db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
                 if (err || !row) {
-                    return res.status(401).send('Invalid credentials');
+                    return res.status(401).send('เกิดข้อผิดพลาดในการโหลดประวัติการนัด');
                 }
                 console.log("Go to user_homepage User ID:", req.session.user_id);
                 res.render('user/user_history', { appointments, username: row.Username });
