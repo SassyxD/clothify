@@ -29,6 +29,7 @@
     <div class="container" style="margin-top: 8rem;">
         <div class="card">
             <h2>สแกน QR Code เพื่อชำระเงินค่าธรรมเนียมจอง</h2>
+            <p>500.00 บาท</p>
             <img src="<%= qrCode %>" alt="PromptPay QR Code">
             <form action="/payment_success" method="POST">
                 <input type="hidden" name="date" value="<%= date %>">
