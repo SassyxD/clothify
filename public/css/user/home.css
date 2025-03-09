@@ -2,15 +2,15 @@
 .container-fluid{
     padding: 50px;
     margin-top: 5%;
-    height: 100vh;
+    
 }
 
 body{
     font-family: "Noto Sans Thai Looped", sans-serif;
     font-weight: 400;
     font-style: normal;
-    height: 100vh;
 }
+
 .container-fluid::before {
     content: "";
     position: fixed;
@@ -23,7 +23,6 @@ body{
     background-position: center;
     filter: brightness(40%);
     z-index: -1;
-    background-attachment: fixed;
 }
 
 .container-fluid h1 {
