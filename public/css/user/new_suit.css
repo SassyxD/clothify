@@ -117,7 +117,7 @@ html, body {
     width: 100%;
 }
 
-.back-button, .log-button, .regis-button {
+.back-button, .log-button{
     display: block;
     width: 130px;
     padding: 10px;

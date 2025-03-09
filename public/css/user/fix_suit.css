@@ -62,7 +62,7 @@ html, body {
     font-size: 70px;
  }
 
-.log-button, .regis-button, .back-button, .success-button{
+.back-button, .success-button{
     display: block;
     width: 130px;
     padding: 10px;
