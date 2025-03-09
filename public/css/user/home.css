@@ -2,25 +2,28 @@
 .container-fluid{
     padding: 50px;
     margin-top: 5%;
+    height: 100vh;
 }
 
 body{
     font-family: "Noto Sans Thai Looped", sans-serif;
     font-weight: 400;
     font-style: normal;
+    height: 100vh;
 }
 .container-fluid::before {
     content: "";
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    height: 100vh;
+    width: 100vw;
     background-image: url('/image/home_bg.png'); 
     background-size: cover; 
     background-position: center;
     filter: brightness(40%);
     z-index: -1;
+    background-attachment: fixed;
 }
 
 .container-fluid h1 {
