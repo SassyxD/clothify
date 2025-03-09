@@ -407,8 +407,7 @@ app.post('/generate-qr',isAuthenticated , (req, res) => {
     });
 });
 
-// หน้าขอบคุณ
-app.post('/payment-success',isAuthenticated , (req, res) => {
+app.post('/payment-success', isAuthenticated, (req, res) => {
     const { date, service, time } = req.body; // รับค่าจาก req.body
 
     // ตรวจสอบข้อมูล
@@ -422,7 +421,7 @@ app.post('/payment-success',isAuthenticated , (req, res) => {
         return res.status(401).send('กรุณาล็อกอินก่อนทำการจอง');
     }
 
-    // Insert booking into Appointment table
+    
     const sql = `
         INSERT INTO Appointment (CustomerID, AppointmentDate, TimeSlot, Service, Status)
         VALUES (?, ?, ?, ?, 'รอการยืนยัน')
@@ -439,9 +438,21 @@ app.post('/payment-success',isAuthenticated , (req, res) => {
                 }
                 console.log("Go to user_homepage User ID:", req.session.user_id);
                 console.log(`Appointment saved with ID: ${this.lastID}`);
-                res.render('user/user_payment_success', { username: row.Username });
+
+                
+                res.redirect('/payment-success-page');
             });
         }
+    });
+});
+
+// หน้าขอบคุณหลังจากบันทึกข้อมูลเรียบร้อยแล้ว
+app.get('/payment-success-page', isAuthenticated, (req, res) => {
+    db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
+        if (err || !row) {
+            return res.status(401).send('Invalid credentials');
+        }
+        res.render('user/user_payment_success', { username: row.Username });
     });
 });
 
