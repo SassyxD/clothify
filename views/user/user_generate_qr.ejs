@@ -30,7 +30,7 @@
         <div class="card">
             <h2>สแกน QR Code เพื่อชำระเงินค่าธรรมเนียมจอง</h2>
             <img src="<%= qrCode %>" alt="PromptPay QR Code">
-            <form action="/payment-success" method="POST">
+            <form action="/payment_success" method="POST">
                 <input type="hidden" name="date" value="<%= date %>">
                 <input type="hidden" name="service" value="<%= service %>">
                 <input type="hidden" name="time" value="<%= time %>">

@@ -30,7 +30,7 @@ function isAuthenticated(req, res, next) {
     if (req.session.user_id) {
         next();
     } else {
-        res.redirect("/user_login?success=pleaselogin")
+        res.redirect("/user_login?success=pleaselogin");
     }
 }
 // Connect to SQLite database
@@ -387,7 +387,7 @@ app.post('/user_review',isAuthenticated , (req, res) => {
     });
 });
 
-app.post('/generate-qr',isAuthenticated , (req, res) => {
+app.post('/generate_qr',isAuthenticated , (req, res) => {
     const { date, service, time } = req.body; // รับค่าจาก req.body
     const paymentData = '00020101021129370016A000000677010111011300660000000005802TH530376463048956'; // PromptPay payload
 
@@ -407,27 +407,20 @@ app.post('/generate-qr',isAuthenticated , (req, res) => {
     });
 });
 
-app.post('/payment-success', isAuthenticated, (req, res) => {
+app.post('/payment_success', isAuthenticated, (req, res) => {
     const { date, service, time } = req.body; // รับค่าจาก req.body
 
     // ตรวจสอบข้อมูล
     if (!date || !service || !time) {
         return res.status(400).send('ข้อมูลไม่ครบถ้วน');
     }
-
-    // ตรวจสอบว่าลูกค้าล็อกอินหรือไม่
-    const customerId = req.session.user_id;
-    if (!customerId) {
-        return res.status(401).send('กรุณาล็อกอินก่อนทำการจอง');
-    }
-
     
     const sql = `
         INSERT INTO Appointment (CustomerID, AppointmentDate, TimeSlot, Service, Status)
         VALUES (?, ?, ?, ?, 'รอการยืนยัน')
     `;
 
-    db.run(sql, [customerId, date, time, service], function (err) {
+    db.run(sql, [req.session.user_id, date, time, service], function (err) {
         if (err) {
             console.error('Error saving appointment:', err.message);
             return res.status(500).send('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
@@ -440,14 +433,14 @@ app.post('/payment-success', isAuthenticated, (req, res) => {
                 console.log(`Appointment saved with ID: ${this.lastID}`);
 
                 
-                res.redirect('/payment-success-page');
+                res.redirect('/payment_success_page');
             });
         }
     });
 });
 
 // หน้าขอบคุณหลังจากบันทึกข้อมูลเรียบร้อยแล้ว
-app.get('/payment-success-page', isAuthenticated, (req, res) => {
+app.get('/payment_success_page', isAuthenticated, (req, res) => {
     db.get('SELECT Username FROM Customer WHERE CustomerID = ? ', [req.session.user_id], (err, row) => {
         if (err || !row) {
             return res.status(401).send('Invalid credentials');
